@@ -1,0 +1,8 @@
+package com.roky.thunderspi.entities;
+
+public enum Role {
+    STUDENT,
+    TEACHER,
+    ESTABLISHMENT,
+    ADMIN
+}
