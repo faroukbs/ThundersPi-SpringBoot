@@ -3,11 +3,10 @@ package com.roky.thunderspi.entities;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -27,4 +26,22 @@ public class User {
     String password;
     String state;
     Role role;
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private Set<Order> orders = new HashSet<>();
+
+    public void add(Order order) {
+
+        if (order != null) {
+
+            if (orders == null) {
+                orders = new HashSet<>();
+            }
+
+            orders.add(order);
+            order.setCustomer(this);
+        }
+    }
+
+    @ManyToMany(mappedBy = "whoWhishesThisProduct")
+    public Set<Product> productsWished;
 }
