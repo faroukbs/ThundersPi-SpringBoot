@@ -24,7 +24,7 @@ public class Product {
     Long idProduct;
     String name;
     String description;
-    BigDecimal price;
+    Double price;
     int quantity;
     String picture;
     LocalDate createdDate;
