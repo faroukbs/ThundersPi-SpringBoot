@@ -2,8 +2,11 @@ package com.roky.thunderspi.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -21,31 +24,44 @@ import java.util.Set;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long idProduct;
-    String name;
-    String description;
-    Double price;
-    int quantity;
-    String picture;
-    LocalDate createdDate;
-    LocalDate updatedDate;
+    private Long id;
+
+    private String name;
+
+    private String description;
+
+    private BigDecimal prix;
+
+    private int quantity;
+
+    private String picture;
+
+    @CreationTimestamp
+    private LocalDate createdDate;
+
+    @UpdateTimestamp
+    private LocalDate updatedDate;
 
     @JsonBackReference
     @ManyToOne
-    CategoryProduct category;
+    private CategoryProduct category ;
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "image", fetch = FetchType.EAGER)
-    Set<MultiPicture> products;
+    private Set<MultiPicture> products;
 
 
     @JsonIgnore
     @ManyToMany
-    Set<User> whoWhishesThisProduct;
+    private Set<User> whoWhishesThisProduct;
 
 
+    @JsonManagedReference
+    @OneToMany(cascade=CascadeType.PERSIST,mappedBy = "produit",fetch=FetchType.LAZY)
+    private List<ProductComment> commentaire;
 
-    Double etoile;
+    private Double etoile;
     @ElementCollection
-    Map<Long, Double> clientEtoile;
+    private Map<Long, Double> clientEtoile;
+
 }

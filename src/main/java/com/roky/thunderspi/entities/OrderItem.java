@@ -15,15 +15,18 @@ import java.math.BigDecimal;
 public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long idOrderItem;
-     String imageUrl;
 
-     BigDecimal price;
+    private Long id;
 
-     int quantity;
+    private String imageUrl;
 
-     Long productId;
+    private BigDecimal prix;
+
+    private int quantity;
+
+    private Long productId;
 
     @ManyToOne
     private Order order;
+
 }

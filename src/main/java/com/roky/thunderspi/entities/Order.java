@@ -21,20 +21,28 @@ import java.util.Set;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long idOrder;
+    @Column(name="id")
+    private Long id;
+
     private String orderTrackingNumber;
+
     private int totalQuantity;
+
     private BigDecimal totalPrice;
+
     private String status;
+
     @CreationTimestamp
     private LocalDate dateCreated;
+
     @UpdateTimestamp
     private LocalDate lastUpdated;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
     private Set<OrderItem> orderItems = new HashSet<>();
-    @ManyToOne
-     User customer;
 
+    @ManyToOne
+    private User customer;
 
 
 

@@ -12,7 +12,7 @@ public interface IProductService {
     Product addProduct(Product product);
     Product editProduct(Product product);
     void deleteProduct(Long id);
-   // List<Product> getAllProductByCategory(CategoryProduct category);
-   // void calculeEtoile(Double rev, Long idP, Long idC);
+    List<Product> getAllProductByCategory(CategoryProduct category);
+    void calculeEtoile(Double rev, Long idP, Long idC) throws Exception;
 
 }

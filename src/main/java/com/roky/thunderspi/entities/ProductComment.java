@@ -6,24 +6,35 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class MultiPicture {
+@Entity
+public class ProductComment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long idCommentaire ;
 
-    String name;
+    private Long idClient;
 
-    String type;
+    private String comment;
 
+    private Long likes;
     @JsonBackReference
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    Product image;
+    @ManyToOne
+    private Product produit;
+
+    @CreationTimestamp
+    private LocalDate dateCreated;
+
+
+    @UpdateTimestamp
+    private LocalDate lastUpdated;
 }
