@@ -10,11 +10,12 @@ import java.util.Set;
 
 @Service
 @AllArgsConstructor
-public class WishListServiceImpl implements IWishListService{
+public class WishListServiceImpl implements IWishListService {
 
     private UserServiceImpl userService;
     private ProductServiceImpl productService;
     private ProductRepo productRepo;
+
     @Override
     public User findClientById(Long id) {
         return userService.findById(id);
