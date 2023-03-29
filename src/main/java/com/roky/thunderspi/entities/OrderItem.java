@@ -16,17 +16,17 @@ public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    private Long id;
+     Long id;
 
-    private String imageUrl;
+     String imageUrl;
 
-    private BigDecimal prix;
+     BigDecimal prix;
 
-    private int quantity;
+     int quantity;
 
-    private Long productId;
+     Long productId;
 
     @ManyToOne
-    private Order order;
+     Order order;
 
 }

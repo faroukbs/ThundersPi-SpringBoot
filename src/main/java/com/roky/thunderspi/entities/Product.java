@@ -24,44 +24,44 @@ import java.util.Set;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+     Long id;
 
-    private String name;
+     String name;
 
-    private String description;
+     String description;
 
-    private BigDecimal prix;
+     BigDecimal prix;
 
-    private int quantity;
+     int quantity;
 
-    private String picture;
+     String picture;
 
     @CreationTimestamp
-    private LocalDate createdDate;
+     LocalDate createdDate;
 
     @UpdateTimestamp
-    private LocalDate updatedDate;
+     LocalDate updatedDate;
 
     @JsonBackReference
     @ManyToOne
-    private CategoryProduct category ;
+     CategoryProduct category ;
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "image", fetch = FetchType.EAGER)
-    private Set<MultiPicture> products;
+     Set<MultiPicture> products;
 
 
     @JsonIgnore
     @ManyToMany
-    private Set<User> whoWhishesThisProduct;
+     Set<User> whoWhishesThisProduct;
 
 
     @JsonManagedReference
     @OneToMany(cascade=CascadeType.PERSIST,mappedBy = "produit",fetch=FetchType.LAZY)
-    private List<ProductComment> commentaire;
+     List<ProductComment> commentaire;
 
-    private Double etoile;
+     Double etoile;
     @ElementCollection
-    private Map<Long, Double> clientEtoile;
+     Map<Long, Double> clientEtoile;
 
 }

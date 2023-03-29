@@ -22,27 +22,27 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
-    private Long id;
+     Long id;
 
-    private String orderTrackingNumber;
+     String orderTrackingNumber;
 
-    private int totalQuantity;
+     int totalQuantity;
 
-    private BigDecimal totalPrice;
+     BigDecimal totalPrice;
 
-    private String status;
+     String status;
 
     @CreationTimestamp
-    private LocalDate dateCreated;
+     LocalDate dateCreated;
 
     @UpdateTimestamp
-    private LocalDate lastUpdated;
+     LocalDate lastUpdated;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
-    private Set<OrderItem> orderItems = new HashSet<>();
+     Set<OrderItem> orderItems = new HashSet<>();
 
     @ManyToOne
-    private User customer;
+     User customer;
 
 
 

@@ -20,21 +20,21 @@ import java.time.LocalDate;
 public class ProductComment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idCommentaire ;
+     Long idCommentaire ;
 
-    private Long idClient;
+     Long idClient;
 
-    private String comment;
+     String comment;
 
-    private Long likes;
+     Long likes;
     @JsonBackReference
     @ManyToOne
-    private Product produit;
+     Product produit;
 
     @CreationTimestamp
-    private LocalDate dateCreated;
+     LocalDate dateCreated;
 
 
     @UpdateTimestamp
-    private LocalDate lastUpdated;
+     LocalDate lastUpdated;
 }
