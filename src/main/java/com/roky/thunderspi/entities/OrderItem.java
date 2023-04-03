@@ -10,23 +10,31 @@ import java.math.BigDecimal;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@Table(name="order_item")
 public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
+    private Long id;
 
-     Long id;
+    @Column(name="image_url")
+    private String imageUrl;
 
-     String imageUrl;
+    @Column(name = "normal_price")
+    private BigDecimal nprix;
 
-     BigDecimal prix;
+    @Column(name = "gros_price")
+    private BigDecimal gprix;
 
-     int quantity;
+    @Column(name="quantity")
+    private int quantity;
 
-     Long productId;
+    @Column(name="product_id")
+    private Long productId;
 
     @ManyToOne
-     Order order;
+    @JoinColumn(name = "order_id")
+    private Order order;
 
 }

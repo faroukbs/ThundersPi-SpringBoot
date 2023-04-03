@@ -42,7 +42,7 @@ public class ProductCommentController {
     @ResponseBody
     public ProductComment addCommentaire(@RequestBody ProductComment c) throws Exception{
         List<String> badWords= Collections.unmodifiableList(Arrays.asList("bob","fuck","shit","dick","sh*t","ass","bitch","bastard","cunt","trash","wanker","piss","pussy","twat","crap","arsehole","gash","prick","cock","minge","nigga","slut","damn","sucker","cracker","poop","puup","boob","buub","f*ck","b*tch","3asba","nayek","nikomok","9a7ba","zebi","sorm"));
-        Product p=produitService.findProdById(c.getProduit().getId());
+        Product p=produitService.findProdById(c.getProcom().getId());
 
         if(p==null){throw new ResponseStatusException(
                 HttpStatus.NOT_FOUND, "NULL");}
@@ -58,7 +58,7 @@ public class ProductCommentController {
                 throw new ResponseStatusException( HttpStatus.NOT_ACCEPTABLE, "Bad Boy");}
         }
 
-        for(ProductComment com :p.getCommentaire()){
+        for(ProductComment com :p.getComments()){
             if(c.getComment().equals(com.getComment())){
                 throw new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Duplicated");
@@ -90,7 +90,7 @@ public class ProductCommentController {
     @ResponseBody
     public ProductComment modifyClient(@RequestBody ProductComment c) throws Exception {
         List<String> badWords=Collections.unmodifiableList(Arrays.asList("bob","fuck","shit","dick","sh*t","ass","bitch","bastard","cunt","trash","wanker","piss","pussy","twat","crap","arsehole","gash","prick","cock","minge","nigga","slut","damn","sucker","cracker","poop","puup","boob","buub","f*ck","b*tch"));
-        Product p=produitService.findProdById(c.getProduit().getId());
+        Product p=produitService.findProdById(c.getProcom().getId());
 
         if(p==null){throw new ResponseStatusException(
                 HttpStatus.NOT_FOUND, "NULL");}
@@ -106,11 +106,11 @@ public class ProductCommentController {
                     HttpStatus.NOT_ACCEPTABLE, "Bad Boy");}
         }
 
-        for(ProductComment com :p.getCommentaire()){
+        for(ProductComment com :p.getComments()){
             if(c.getComment().equals(com.getComment()) && c.getLikes()==com.getLikes()){
                 throw new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Duplicated");
-            }
+        }
         }
         return commentaireService.updateCommentaire(c);
     }

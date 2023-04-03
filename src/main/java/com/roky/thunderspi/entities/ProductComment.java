@@ -1,40 +1,43 @@
+
 package com.roky.thunderspi.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.util.Date;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@Table(name = "commentprod")
 public class ProductComment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-     Long idCommentaire ;
+    Long idCommentaire;
 
-     Long idClient;
+    Long idClient;
 
-     String comment;
+    String comment;
 
-     Long likes;
-    @JsonBackReference
+    Long likes;
+
     @ManyToOne
-     Product produit;
+    Product procom;
 
     @CreationTimestamp
-     LocalDate dateCreated;
+    Date dateCreated;
 
-
+    @Column(name = "last_updated")
     @UpdateTimestamp
-     LocalDate lastUpdated;
+    Date lastUpdated;
+
+
 }
+

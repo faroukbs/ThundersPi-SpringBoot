@@ -10,7 +10,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -21,47 +22,57 @@ import java.util.Set;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@Table(name = "product")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-     Long id;
+    @Column(name = "id")
+    private Long id;
 
-     String name;
+    @Column(name = "name")
+    private String name;
 
-     String description;
+    @Column(name = "description")
+    private String description;
 
-     BigDecimal prix;
 
-     int quantity;
+    @Column(name = "price")
+    private BigDecimal prix;
 
-     String picture;
+    @Column(name = "quantity")
+    private int quantity;
 
+    @Column(name = "picture")
+    private String picture;
+
+    @Column(name = "create_date")
     @CreationTimestamp
-     LocalDate createdDate;
+    private Date createdDate;
 
+    @Column(name = "updated_date")
     @UpdateTimestamp
-     LocalDate updatedDate;
+    private Date updatedDate;
 
     @JsonBackReference
     @ManyToOne
-     CategoryProduct category ;
+    @JoinColumn(name = "category_id")
+    private CategoryProduct category;
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "image", fetch = FetchType.EAGER)
-     Set<MultiPicture> products;
+    private Set<MultiPicture> products;
 
 
     @JsonIgnore
     @ManyToMany
-     Set<User> whoWhishesThisProduct;
+    @JoinTable(name = "WISHLIST", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "client_id"))
+    private Set<User> whoWhishesThisProduct;
 
 
-    @JsonManagedReference
-    @OneToMany(cascade=CascadeType.PERSIST,mappedBy = "produit",fetch=FetchType.LAZY)
-     List<ProductComment> commentaire;
+ @OneToMany(mappedBy = "procom")
+ List<ProductComment> comments;
 
-     Double etoile;
+    private Double etoile;
     @ElementCollection
-     Map<Long, Double> clientEtoile;
-
+    private Map<Long, Double> clientEtoile;
 }

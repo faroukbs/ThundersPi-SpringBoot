@@ -1,5 +1,6 @@
 package com.roky.thunderspi.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -12,11 +13,19 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Table(name = "product_category")
+@Data
 public class CategoryProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-    String name;
+    @Column(name = "id")
+    private Long id;
+
+    @Column(name = "name")
+    private String name;
+
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
-    Set<Product> products;
+    private Set<Product> products;
 }
+

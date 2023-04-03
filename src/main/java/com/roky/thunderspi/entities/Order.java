@@ -8,7 +8,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,31 +18,39 @@ import java.util.Set;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@Table(name="orders")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
-     Long id;
+    private Long id;
 
-     String orderTrackingNumber;
+    @Column(name="order_tracking_number")
+    private String orderTrackingNumber;
 
-     int totalQuantity;
+    @Column(name="total_quantity")
+    private int totalQuantity;
 
-     BigDecimal totalPrice;
+    @Column(name="total_price")
+    private BigDecimal totalPrice;
 
-     String status;
+    @Column(name="status")
+    private String status;
 
+    @Column(name="date_created")
     @CreationTimestamp
-     LocalDate dateCreated;
+    private Date dateCreated;
 
+    @Column(name="last_updated")
     @UpdateTimestamp
-     LocalDate lastUpdated;
+    private Date lastUpdated;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
-     Set<OrderItem> orderItems = new HashSet<>();
+    private Set<OrderItem> orderItems = new HashSet<>();
 
     @ManyToOne
-     User customer;
+    @JoinColumn(name = "customer_id")
+    private User customer;
 
 
 
@@ -58,3 +66,5 @@ public class Order {
         }
     }
 }
+
+

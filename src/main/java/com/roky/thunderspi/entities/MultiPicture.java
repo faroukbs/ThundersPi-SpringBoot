@@ -14,16 +14,21 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Table(name = "fileUp")
 public class MultiPicture {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    @Column(name = "id")
+    private Long id;
 
-    String name;
+    private String name;
 
-    String type;
+    private String type;
 
     @JsonBackReference
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    Product image;
+    @JoinColumn(name = "image")
+    private Product image;
+
+
 }
