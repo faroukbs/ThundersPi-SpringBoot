@@ -39,5 +39,5 @@ public class IProjectServiceImp implements IProjectService{
         return projectRepository.findAll().stream();
     }
 
-    public Stream<Project> getProjectsByTeacher(Long id){ return projectRepository.findProjectByUserId(id).stream();}
+    public Stream<Project> getProjectsByTeacher(Long id){ return null;}
 }
