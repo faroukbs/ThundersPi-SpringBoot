@@ -3,11 +3,10 @@ package com.roky.thunderspi.entities;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -25,5 +24,8 @@ public class Course {
     LocalDate dateAdded;
     LocalDate dateUpdated;
     String courseLanguage;
+
+    @OneToMany(mappedBy = "course", cascade = {CascadeType.PERSIST, CascadeType.DETACH})
+    private Set<Project> projects = new LinkedHashSet<>();
 
 }

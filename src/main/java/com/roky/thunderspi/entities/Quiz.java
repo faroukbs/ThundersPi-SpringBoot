@@ -1,26 +1,78 @@
 package com.roky.thunderspi.entities;
 
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+import javax.persistence.*;
+import java.util.Date;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 public class Quiz {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long idQuiz;
-    Boolean active;
-    String title;
-    String description;
-    int maxmarks;
-    int numberofquestion;
+    private Long id;
+
+    private String name;
+
+    private float maxMarks;
+
+    @OneToMany
+    private Set<QuizCategory> quizCategories = new LinkedHashSet<>();
+
+    private Date dateCreated;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public float getMaxMarks() {
+        return maxMarks;
+    }
+
+    public void setMaxMarks(float maxMarks) {
+        this.maxMarks = maxMarks;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public Set<Question> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(Set<Question> questions) {
+        this.questions = questions;
+    }
+
+    public User getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(User teacher) {
+        this.teacher = teacher;
+    }
+
+    @OneToMany(mappedBy = "quiz", orphanRemoval = true)
+    private Set<Question> questions = new LinkedHashSet<>();
+
+    @ManyToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(name = "teacher_id")
+    private User teacher;
+
 }
