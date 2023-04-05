@@ -19,4 +19,6 @@ public class Comment  {
     String title;
     String content;
     String picture;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private BlogPost blogPost;
 }

@@ -3,10 +3,8 @@ package com.roky.thunderspi.entities;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -21,4 +19,15 @@ public class BlogPost {
     String title;
     String content;
     String picture;
+
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private Actuality actuality;
+
+    @OneToMany(mappedBy = "blogPost",cascade = CascadeType.REMOVE)
+    private Set<Comment> comments;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private User user;
+
 }

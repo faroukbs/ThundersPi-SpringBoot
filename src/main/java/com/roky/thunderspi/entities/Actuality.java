@@ -3,10 +3,9 @@ package com.roky.thunderspi.entities;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
+
 @Entity
 @Getter
 @Setter
@@ -17,4 +16,7 @@ public class Actuality {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long idActuality;
+
+    @OneToMany(mappedBy = "actuality", cascade = CascadeType.REMOVE)
+    private Set<BlogPost> blogPostset;
 }
