@@ -13,4 +13,5 @@ public interface QuizRepository extends JpaRepository<Quiz,Long> {
     @Query("select q from Quiz q where q.teacher = ?1")
     Set<Quiz> findQuizByTeacher(Long id);
 
+
 }
