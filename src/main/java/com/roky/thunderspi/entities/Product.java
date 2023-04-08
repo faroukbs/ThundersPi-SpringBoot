@@ -9,6 +9,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 import java.util.Date;
@@ -30,16 +32,20 @@ public class Product {
     private Long id;
 
     @Column(name = "name")
+    @NotBlank(message = "product name is required")
     private String name;
 
     @Column(name = "description")
+    @NotBlank(message = "give a description for your product")
     private String description;
 
 
     @Column(name = "price")
+    @NotNull(message = "price must be done")
     private BigDecimal prix;
 
     @Column(name = "quantity")
+    @NotNull(message = "quantity must be done")
     private int quantity;
 
     @Column(name = "picture")

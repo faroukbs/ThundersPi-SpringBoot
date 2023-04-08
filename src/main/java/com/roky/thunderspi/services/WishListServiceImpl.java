@@ -3,46 +3,70 @@ package com.roky.thunderspi.services;
 import com.roky.thunderspi.entities.Product;
 import com.roky.thunderspi.entities.User;
 import com.roky.thunderspi.repositories.ProductRepo;
+import com.roky.thunderspi.repositories.UserRepo;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Set;
 
 @Service
-@AllArgsConstructor
-public class WishListServiceImpl implements IWishListService {
+public class WishListServiceImpl {
 
-    private UserServiceImpl userService;
+    @Autowired
+    private UserServiceImpl clientService;
+
+    @Autowired
     private ProductServiceImpl productService;
+
+    @Autowired
+    private UserRepo clientRepo;
+
+    @Autowired
     private ProductRepo productRepo;
 
-    @Override
-    public User findClientById(Long id) {
-        return userService.findById(id);
+    private User findClientById(Long id) throws Exception {
+        return clientService.findById(id);
     }
 
-    @Override
-    public Product findProductById(Long id) {
+    private Product findProductById(Long id) throws Exception {
         return productService.findProdById(id);
     }
 
-    @Override
-    public Set<Product> findAll() {
-        return null;
+    public Set<Product> findAll() throws Exception {
+      //  UserPrincipal user = UserService.clientAuthenticated();
+        //User cli = findClientById(user.getId());
+
+        //return cli.getProductsWished();
+return  null;
     }
 
-    @Override
-    public void markProductAsWished(Long productId) {
+    public void markProductAsWished(Long productId) throws Exception {
+        Product product = findProductById(productId);
+      //  UserPrincipal user = UserService.clientAuthenticated();
+       // User client = findClientById(user.getId());
 
-    }
+     //   if (client.getProductsWished().contains(product)) {
+            throw new Exception();
+        }
 
-    @Override
+       // client.getProductsWished().add(product);
+       // product.getWhoWhishesThisProduct().add(client);
+
+       // clientRepo.save(client);
+       // productRepo.save(product);
+    //}
+
+    @Transactional
     public void delete(Long productId) {
+      //  UserPrincipal user = UserService.clientAuthenticated();
 
+        //productRepo.removeFromClientWishlist(productId, user.getId());
     }
 
-    @Override
-    public void removeProductFromWishlistWhenIsSold(Long productId) {
-
-    }
+    //@Transactional
+   // public void removeProductFromWishlistWhenIsSold(Long productId) {
+     //   productRepo.removeFromWishListWhenIsSold(productId);
+    //}
 }

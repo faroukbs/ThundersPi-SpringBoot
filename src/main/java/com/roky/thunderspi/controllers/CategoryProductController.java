@@ -11,9 +11,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/category")
+@CrossOrigin("http://localhost:4200")
 @AllArgsConstructor
 public class CategoryProductController {
     private IProductCategoryService iProductCategoryService;
+
 
     @GetMapping("/all")
     public ResponseEntity<List<CategoryProduct>> getAllCategories () {

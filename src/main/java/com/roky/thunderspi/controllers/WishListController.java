@@ -1,7 +1,7 @@
 package com.roky.thunderspi.controllers;
 
 import com.roky.thunderspi.entities.Product;
-import com.roky.thunderspi.services.IWishListService;
+import com.roky.thunderspi.services.WishListServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +13,7 @@ import java.util.Set;
 //@CrossOrigin(origins = "*", allowedHeaders = "*")
 @AllArgsConstructor
 public class WishListController {
-    private IWishListService service;
+    private WishListServiceImpl service;
 
     @GetMapping("/wishlist")
     public ResponseEntity<Set<Product>> returnWishlist() throws Exception {

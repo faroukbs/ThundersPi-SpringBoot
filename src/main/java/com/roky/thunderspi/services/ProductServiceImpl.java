@@ -29,13 +29,13 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public Product addProduct(Product product) {
-        return productRepo.save(product);
+    public long addProduct(Product product) {
+        return productRepo.save(product).getId();
     }
 
     @Override
-    public Product editProduct(Product product) {
-        return productRepo.save(product);
+    public long editProduct(Product product) {
+        return productRepo.save(product).getId();
     }
 
     @Override
