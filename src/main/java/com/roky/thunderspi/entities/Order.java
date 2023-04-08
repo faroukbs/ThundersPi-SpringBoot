@@ -2,7 +2,7 @@ package com.roky.thunderspi.entities;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.apache.tomcat.jni.Address;
+
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -14,34 +14,35 @@ import java.util.Set;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name="orders")
+@Table(name = "orders")
 public class Order {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name = "id")
     private Long id;
 
-    @Column(name="order_tracking_number")
+    @Column(name = "order_tracking_number")
     private String orderTrackingNumber;
 
-    @Column(name="total_quantity")
+    @Column(name = "total_quantity")
     private int totalQuantity;
 
-    @Column(name="total_price")
+    @Column(name = "total_price")
     private BigDecimal totalPrice;
 
-    @Column(name="status")
+    @Column(name = "status")
     private String status;
 
-    @Column(name="date_created")
+    @Column(name = "date_created")
     @CreationTimestamp
     private Date dateCreated;
 
-    @Column(name="last_updated")
+    @Column(name = "last_updated")
     @UpdateTimestamp
     private Date lastUpdated;
 
@@ -52,7 +53,13 @@ public class Order {
     @JoinColumn(name = "customer_id")
     private User customer;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "shipping_address_id", referencedColumnName = "id")
+    private Address shippingAddress;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "billing_address_id", referencedColumnName = "id")
+    private Address billingAddress;
 
     public void add(OrderItem item) {
 
@@ -66,5 +73,6 @@ public class Order {
         }
     }
 }
+
 
 
