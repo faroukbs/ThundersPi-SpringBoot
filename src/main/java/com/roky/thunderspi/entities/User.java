@@ -2,9 +2,11 @@ package com.roky.thunderspi.entities;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,20 +14,54 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@Table(name = "user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long idUser;
-    String FirstName;
-    String LastName;
-    String phone_number;
-    LocalDate date_inscription;
-    String email;
-    String password;
-    String state;
-    Role role;
+    @Column(name = "id")
+    private Long id ;
+
+    @NotBlank(message = "First name is required")
+    @Column(name = "first_name")
+    private String fname;
+
+    @NotBlank(message = "Last name is required")
+    @Column(name = "last_name")
+    private String lname ;
+
+    @NotBlank(message = "Email is required")
+    @Column(name = "email")
+    private String email ;
+
+    @NotBlank(message = "Password is required")
+    @Column(name = "password")
+    private String password ;
+
+
+    @NotBlank(message = "Phone number is required")
+    @Column(name = "phone")
+    private String phone;
+
+    @NotBlank(message = "adress is required")
+    @Column(name = "adress")
+    private String adress ;
+
+    @Enumerated(EnumType.STRING)
+    @Lazy
+    @Column(name = "role")
+    private Role role;
+
+    @Transient
+    private String token;
+
+    @Column(name = "verification_code", length = 64)
+    private String verificationCode;
+
+    private boolean enabled;
+
+    @Column(name = "reset_password_token")
+    private String resetPasswordToken;
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private Set<Order> orders = new HashSet<>();
 
@@ -47,4 +83,5 @@ public class User {
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
     private Set<BlogPost> blogPosts;
+
 }

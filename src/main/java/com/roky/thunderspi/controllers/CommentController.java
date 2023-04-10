@@ -11,7 +11,7 @@ public class CommentController {
 
     private ICommentService iCommentService;
     private IBlogPostService iBlogPostService;
-    private IUserService userService;
+    private UserServiceImpl userService;
 
     @GetMapping("/getall")
     @ResponseBody
