@@ -6,7 +6,7 @@ import com.roky.thunderspi.entities.ProductComment;
 import com.roky.thunderspi.entities.User;
 import com.roky.thunderspi.services.IProductCommentService;
 import com.roky.thunderspi.services.IProductService;
-import com.roky.thunderspi.services.IUserService;
+import com.roky.thunderspi.services.UserServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +22,7 @@ import java.util.List;
 public class ProductCommentController {
     private IProductCommentService commentaireService;
     private IProductService produitService;
-    private IUserService userService;
+    private UserServiceImpl userService;
 
     @GetMapping("/retrieve-all-commentaires")
     @ResponseBody

@@ -5,18 +5,36 @@ import com.roky.thunderspi.entities.Product;
 import com.roky.thunderspi.entities.User;
 import com.roky.thunderspi.repositories.ProductRepo;
 import com.roky.thunderspi.repositories.UserRepo;
+import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.type.PhoneNumber;
 import lombok.AllArgsConstructor;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
 
 @Service
-@AllArgsConstructor
+@Slf4j
+@RequiredArgsConstructor
 public class ProductServiceImpl implements IProductService {
+
     private final ProductRepo productRepo;
+
     private final UserRepo userRepo;
 
+    @Value("${app.TWILIO_AUTH_TOKEN}")
+    private  String Service_TWILIO_AUTH_TOKEN;
+    @Value("${app.TWILIO_ACCOUNT_SID}")
+    private  String Service_TWILIO_ACCOUNT_SID;
 
     @Override
     public List<Product> findAllProducts() {
@@ -100,6 +118,15 @@ public class ProductServiceImpl implements IProductService {
             }
             updateProduit(p);
         }
+    }
+
+    @Async
+    public String SendSms(String Phone, String message){
+        Twilio.init(Service_TWILIO_ACCOUNT_SID, Service_TWILIO_AUTH_TOKEN);
+        Message.creator(new PhoneNumber(Phone),
+                new PhoneNumber("+15076051717"), message).create();
+        log.info("Sms Send");
+        return "Message sent successfully";
     }
 
 

@@ -10,6 +10,6 @@ import java.util.Set;
 
 @Repository
 public interface ProjectSubmissionRepository extends JpaRepository<ProjectSubmission,Long> {
-    @Query("select p from ProjectSubmission p where p.user.idUser = ?1")
+    @Query("select p from ProjectSubmission p where p.user.id = ?1")
     Set<ProjectSubmission> findByUserId(Long id);
 }

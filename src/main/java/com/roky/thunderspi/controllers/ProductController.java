@@ -6,12 +6,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.roky.thunderspi.entities.CategoryProduct;
 import com.roky.thunderspi.entities.MultiPicture;
 import com.roky.thunderspi.entities.Product;
+import com.roky.thunderspi.entities.User;
 import com.roky.thunderspi.repositories.MultiPictureRepo;
 import com.roky.thunderspi.repositories.ProductRepo;
-import com.roky.thunderspi.services.IProductCategoryService;
-import com.roky.thunderspi.services.IProductService;
-import com.roky.thunderspi.services.ProductCategoryServiceImpl;
-import com.roky.thunderspi.services.ProductServiceImpl;
+import com.roky.thunderspi.services.*;
 import lombok.AllArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +36,8 @@ import java.util.Set;
 public class ProductController implements ServletContextAware {
     private final ProductServiceImpl productService;
     private ProductCategoryServiceImpl productCategoryService;
+
+
 
 
     ServletContext context;
@@ -79,6 +79,7 @@ public class ProductController implements ServletContextAware {
     public long newProduct(@RequestParam("files") MultipartFile[] files,
                            @RequestParam("product") String product,
                            @RequestParam("file") MultipartFile image) throws JsonParseException, JsonMappingException, Exception {
+
         Product arti = new ObjectMapper().readValue(product, Product.class);
         boolean isExit = new File(context.getRealPath("/Imagess/")).exists();
         if (!isExit) {
@@ -119,17 +120,22 @@ public class ProductController implements ServletContextAware {
 
         System.out.println("Save Article 333333.............");
         // arti.setProducts(photos);
+       // User user = new User();
+        //System.out.println(user.getPhone_number());
+        productService.SendSms("+21628608927",
+                "Hello we send you this sms to inform you that we have add  new product:"+ arti.getName()+arti.getPrix()+arti.getDescription()+arti.getProducts()+arti.getPrix()+"to our shop check our shop  and by somthing to let us help needy peapole");
+
         return productService.addProduct(arti);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteEmployee(@PathVariable("id") Long id) {
+    public ResponseEntity<?> deleteproduct(@PathVariable("id") Long id) {
         productService.deleteProduct(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/update")
-    public long updateEmployee(@RequestParam("file") MultipartFile file,
+    public long updateproduct(@RequestParam("file") MultipartFile file,
                                @RequestParam("product") String product) throws JsonParseException, JsonMappingException, Exception {
         Product arti = new ObjectMapper().readValue(product, Product.class);
         boolean isExit = new File(context.getRealPath("/Imagess/")).exists();
