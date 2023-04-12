@@ -13,7 +13,15 @@ public class Project {
   private String name;
 
   private float maxMarks;
+  @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+  private Set<ProjectFile> projectFiles = new LinkedHashSet<>();
 
+  @ManyToOne
+  @JoinColumn(name = "course_id_course")
+  private Course course;
+  @ManyToOne(cascade = CascadeType.DETACH)
+  @JoinColumn(name = "teacher_id")
+  private User user;
 
   public User getUser() {
     return user;
@@ -23,9 +31,7 @@ public class Project {
     this.user = user;
   }
 
-  @ManyToOne
-  @JoinColumn(name = "course_id_course")
-  private Course course;
+
 
   public float getMaxMarks() {
     return maxMarks;
@@ -37,9 +43,7 @@ public class Project {
 
   private String description;
 
-  @ManyToOne(cascade = CascadeType.DETACH)
-  @JoinColumn(name = "teacher_id")
-  private User user;
+
 
   public String getDescription() {
     return description;
@@ -49,8 +53,6 @@ public class Project {
     this.description = description;
   }
 
-  @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
-    private Set<ProjectFile> projectFiles = new LinkedHashSet<>();
 
 
 

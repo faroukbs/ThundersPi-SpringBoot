@@ -12,6 +12,23 @@ public class ProjectSubmission {
   private String title;
 
   private String description;
+  private float marks;
+
+  public float getMarks() {
+    return marks;
+  }
+
+  public void setMarks(float marks) {
+    this.marks = marks;
+  }
+
+  public Set<ProjectFile> getProjectFiles() {
+    return projectFiles;
+  }
+
+  public void setProjectFiles(Set<ProjectFile> projectFiles) {
+    this.projectFiles = projectFiles;
+  }
 
   @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
   private Set<ProjectFile> projectFiles = new LinkedHashSet<>();
