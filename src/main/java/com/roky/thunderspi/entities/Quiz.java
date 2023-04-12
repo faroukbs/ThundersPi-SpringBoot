@@ -15,6 +15,10 @@ public class Quiz {
 
     private float maxMarks;
 
+    @ManyToOne
+    @JoinColumn(name = "course_id_course")
+    private Course course;
+
     @OneToMany
     private Set<QuizCategory> quizCategories = new LinkedHashSet<>();
 
