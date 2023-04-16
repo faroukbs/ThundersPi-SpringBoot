@@ -12,29 +12,34 @@ public class CommentServiceImpl implements ICommentService{
 
     @Autowired
     CommentRepo commentRepo;
+
     @Override
-    public void add(Comment s) {
-        commentRepo.save(s);
+    public List<Comment> retrieveAllCommentaires() {
+        List<Comment> commentaires = (List<Comment>) commentRepo.findAll();
+
+        return commentaires;
     }
 
     @Override
-    public Comment update(Comment s) {
-        return commentRepo.save(s);
+    public Comment addCommentaire(Comment c) {
+        commentRepo.save(c);
+        return c;
     }
 
     @Override
-    public List<Comment> getAll() {
-        return (List<Comment>) commentRepo.findAll();
-    }
-
-    @Override
-    public Comment getById(long id) {
-        return commentRepo.findById(id).orElse(null);
-    }
-
-    @Override
-    public void remove(long id) {
-
+    public void deleteCommentaire(Long id) {
         commentRepo.deleteById(id);
+    }
+
+    @Override
+    public Comment updateCommentaire(Comment u) {
+        commentRepo.save(u);
+        return u;
+    }
+
+    @Override
+    public Comment retrieveCommentaire(Long id) {
+      Comment commentaire = commentRepo.findById(id).orElse(null);
+        return commentaire;
     }
 }

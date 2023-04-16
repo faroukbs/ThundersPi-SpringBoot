@@ -1,19 +1,17 @@
 package com.roky.thunderspi.services;
 
-import com.roky.thunderspi.entities.BlogPost;
+import com.roky.thunderspi.entities.Post;
 import com.roky.thunderspi.entities.Comment;
 
 import java.util.List;
 
 public interface ICommentService {
 
-    void add(Comment s);
+    List<Comment> retrieveAllCommentaires();
 
-    Comment update(Comment s);
+  Comment addCommentaire(Comment c);
 
-    List<Comment> getAll();
-
-    Comment getById(long id);
-
-    void remove(long id);
+    void deleteCommentaire(Long id);
+    Comment updateCommentaire(Comment u);
+    Comment retrieveCommentaire(Long id);
 }

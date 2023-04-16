@@ -1,18 +1,22 @@
 package com.roky.thunderspi.services;
 
-import com.roky.thunderspi.entities.BlogPost;
+import com.roky.thunderspi.dto.PostDto;
+import com.roky.thunderspi.entities.Post;
 
 import java.util.List;
 
 public interface IBlogPostService {
 
-    void add(BlogPost s);
+    void createPost(PostDto postDto);
 
-    BlogPost update(BlogPost s);
 
-    List<BlogPost> getAll();
+    List<PostDto> showAllPosts();
 
-    BlogPost getById(long id);
+    PostDto readSinglePost(Long id);
 
-    void remove(long id);
+    String deletePost(long id);
+
+    Post getSinglePost(Long id);
+
+
 }
