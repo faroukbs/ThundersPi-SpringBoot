@@ -18,5 +18,5 @@ public class Actuality {
     Long idActuality;
 
     @OneToMany(mappedBy = "actuality", cascade = CascadeType.REMOVE)
-    private Set<BlogPost> blogPostset;
+    private Set<Post> blogPostset;
 }

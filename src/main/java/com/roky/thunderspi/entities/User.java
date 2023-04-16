@@ -81,7 +81,6 @@ public class User {
     @ManyToMany(mappedBy = "whoWhishesThisProduct")
     public Set<Product> productsWished;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
-    private Set<BlogPost> blogPosts;
+
 
 }

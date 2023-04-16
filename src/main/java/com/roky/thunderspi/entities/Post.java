@@ -68,4 +68,6 @@ public class Post {
         this.image = image;
         this.user = user;
     }
+    @ManyToOne
+    private Actuality actuality;
 }

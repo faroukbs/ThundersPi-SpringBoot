@@ -1,7 +1,7 @@
 package com.roky.thunderspi.services;
 
 import com.roky.thunderspi.entities.Actuality;
-import com.roky.thunderspi.entities.BlogPost;
+import com.roky.thunderspi.entities.Post;
 
 import java.util.List;
 
