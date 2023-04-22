@@ -6,6 +6,7 @@ import com.roky.thunderspi.entities.Post;
 import com.roky.thunderspi.entities.Product;
 import com.roky.thunderspi.entities.ProductComment;
 import com.roky.thunderspi.services.*;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -13,7 +14,9 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
+@RestController
+@AllArgsConstructor
+@RequestMapping("/api/comment")
 public class CommentController {
 
     private ICommentService commentaireService;
