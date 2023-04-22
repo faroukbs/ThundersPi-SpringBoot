@@ -18,6 +18,25 @@ import java.util.Date;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import com.roky.thunderspi.security.UserPrincipal;
+import com.roky.thunderspi.util.SecurityUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+
+import javax.servlet.http.HttpServletRequest;
+import java.security.Key;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Component
 public class JwtProvider implements IJwtProvider{
 
@@ -27,15 +46,23 @@ public class JwtProvider implements IJwtProvider{
     @Value("${app.jwt.expiration-in-ms}")
     private int JWT_EXPIRATION_IN_MS;
 
+    private Key secretKey;
+
+    public JwtProvider() {
+        // Generate a secure signing key with HS512 algorithm and a size of 512 bits
+        this.secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+    }
+
     @Override
     public String generateToken(UserPrincipal auth){
-         String authorities = auth.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining());
-         return Jwts.builder().setSubject(auth.getEmail()).claim("roles", authorities)
-                 .claim("userId", auth.getId())
-                 .setExpiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION_IN_MS))
-                 .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
-                 .compact();
+        String authorities = auth.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining());
+        return Jwts.builder().setSubject(auth.getEmail()).claim("roles", authorities)
+                .claim("userId", auth.getId())
+                .setExpiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION_IN_MS))
+                .signWith(secretKey)
+                .compact();
     }
+
 
     @Override
     public Authentication getAuthentication(HttpServletRequest request){

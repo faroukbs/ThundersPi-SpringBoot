@@ -24,7 +24,7 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class UserServiceImpl  {
-    private UserRepo userRepo;
+  //  private UserRepo userRepo;
 
     @Autowired
     private UserRepo userRepository;
@@ -41,7 +41,7 @@ public class UserServiceImpl  {
             throws UnsupportedEncodingException, MessagingException {
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
-        user.setRole(Role.USER);
+        user.setRole(user.getRole());
 
         String randomCode = RandomString.make(64);
         user.setVerificationCode(randomCode);
@@ -55,8 +55,8 @@ public class UserServiceImpl  {
     private void sendVerificationEmail(User user, String siteURL)
             throws MessagingException, UnsupportedEncodingException {
         String toAddress = user.getEmail();
-        String fromAddress = "margoumik@gmail.com";
-        String senderName = "Sakly Textile";
+        String fromAddress = "eduuhuub@gmail.com";
+        String senderName = "hi there";
         String subject = "Please verify your registration";
         String content = "Dear [[name]],<br>"
                 + "Please click the link below to verify your registration:<br>"
@@ -67,7 +67,7 @@ public class UserServiceImpl  {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
-        helper.setFrom(fromAddress, senderName);
+        helper.setFrom("eduuhuub@gmail.com");
         helper.setTo(toAddress);
         helper.setSubject(subject);
 
@@ -81,7 +81,6 @@ public class UserServiceImpl  {
         mailSender.send(message);
 
     }
-
 
     public boolean verify(String verificationCode) {
         User user = userRepository.findByVerificationCode(verificationCode);
