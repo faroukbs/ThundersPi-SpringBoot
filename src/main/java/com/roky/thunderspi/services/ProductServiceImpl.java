@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -118,6 +119,11 @@ public class ProductServiceImpl implements IProductService {
             }
             updateProduit(p);
         }
+    }
+
+    @Override
+    public List<Product> findByPrice(BigDecimal minP, BigDecimal maxP) {
+        return productRepo.findByPrixBetween(minP,maxP);
     }
 
     @Async

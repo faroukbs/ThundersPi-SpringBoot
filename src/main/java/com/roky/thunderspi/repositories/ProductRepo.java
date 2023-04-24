@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,7 +18,7 @@ public interface ProductRepo extends JpaRepository<Product,Long> {
 
     public List<Product> findByCategory(CategoryProduct category);
 
-
+    List<Product>findByPrixBetween(BigDecimal minP,BigDecimal maxP);
 
    // @Modifying
    // @Query(value="delete from wishlist where product_id = :id",nativeQuery = true)

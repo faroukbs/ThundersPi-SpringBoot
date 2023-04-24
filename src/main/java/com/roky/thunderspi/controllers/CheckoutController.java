@@ -10,6 +10,7 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +19,11 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin("http://localhost:4200")
 @RestController
 @RequestMapping("/api/checkout")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CheckoutController {
 
 
-    private CheckoutServiceImpl checkoutService;
+    private final CheckoutServiceImpl checkoutService;
 
 
 

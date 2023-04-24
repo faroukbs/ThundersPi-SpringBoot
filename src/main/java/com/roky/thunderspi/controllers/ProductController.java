@@ -23,6 +23,7 @@ import org.apache.commons.io.FileUtils;
 import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -214,6 +215,11 @@ public class ProductController implements ServletContextAware {
     @ResponseBody
     public void moyEtoile(@PathVariable("produit-id") Long produitId, @PathVariable("client-id") Long clientId, @PathVariable("rev") Double rev) throws Exception {
         productService.calculeEtoile(rev, produitId, clientId);
+    }
+
+    @GetMapping("prix/{minP}/{maxP}")
+    public List<Product> findByPrice(@PathVariable BigDecimal minP, @PathVariable BigDecimal maxP){
+        return productService.findByPrice(minP,maxP);
     }
 
 }
