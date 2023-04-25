@@ -136,8 +136,10 @@ public class ProductController implements ServletContextAware {
     }
 
     @PutMapping("/update")
-    public long updateproduct(@RequestParam("file") MultipartFile file,
-                               @RequestParam("product") String product) throws JsonParseException, JsonMappingException, Exception {
+    public long updateproduct(@RequestParam("files") MultipartFile[] files,
+                              @RequestParam("product") String product,
+                              @RequestParam("file") MultipartFile image) throws JsonParseException, JsonMappingException, Exception {
+
         Product arti = new ObjectMapper().readValue(product, Product.class);
         boolean isExit = new File(context.getRealPath("/Imagess/")).exists();
         if (!isExit) {
@@ -145,18 +147,39 @@ public class ProductController implements ServletContextAware {
             System.out.println("mk dir Imagess.............");
         }
         System.out.println("Save Article  22222.............");
-        String filename = file.getOriginalFilename();
-        String newFileName = FilenameUtils.getBaseName(filename) + "." + FilenameUtils.getExtension(filename);
+        Set<MultiPicture> photos = new HashSet<>();
+        for (MultipartFile file : files) {
+            MultiPicture fileinfo = new MultiPicture();
+            String filename = file.getOriginalFilename();
+            String newFileName = FilenameUtils.getBaseName(filename) + "." + FilenameUtils.getExtension(filename);
+            File serverFile = new File(context.getRealPath("/Imagess/" + File.separator + newFileName));
+            try {
+                System.out.println("Image");
+                FileUtils.writeByteArrayToFile(serverFile, file.getBytes());
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            fileinfo.setName(newFileName);
+            fileinfo.setImage(arti);
+            imageRepository.save(fileinfo);
+            photos.add(fileinfo);
+        }
+        String fileName = image.getOriginalFilename();
+        String newFileName = FilenameUtils.getBaseName(fileName) + "." + FilenameUtils.getExtension(fileName);
         File serverFile = new File(context.getRealPath("/Imagess/" + File.separator + newFileName));
         try {
             System.out.println("Image");
-            FileUtils.writeByteArrayToFile(serverFile, file.getBytes());
+            FileUtils.writeByteArrayToFile(serverFile, image.getBytes());
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("Save Article 333333.............");
-        // arti.setImage(newFileName);
+        arti.setPicture(newFileName);
+
+
+
+        
         return productService.editProduct(arti);
     }
 
