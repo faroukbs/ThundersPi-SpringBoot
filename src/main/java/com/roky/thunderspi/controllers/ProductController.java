@@ -31,20 +31,15 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 @RestController
 @RequestMapping("/product")
 @CrossOrigin("http://localhost:4200")
 public class ProductController implements ServletContextAware {
     private final ProductServiceImpl productService;
     private ProductCategoryServiceImpl productCategoryService;
-
-
-
-
     ServletContext context;
     private final ProductRepo productRepository;
-
-
     @Autowired
     MultiPictureRepo imageRepository;
 
@@ -118,12 +113,11 @@ public class ProductController implements ServletContextAware {
         }
         System.out.println("Save Article 333333.............");
         arti.setPicture(newFileName);
-
         System.out.println("Save Article 333333.............");
         // arti.setProducts(photos);
-       // User user = new User();
+        // User user = new User();
         //System.out.println(user.getPhone_number());
-      //  productService.SendSms("+21628608927",
+        //  productService.SendSms("+21628608927",
         //        "Hello we send you this sms to inform you that we have add  new product:"+ arti.getName()+arti.getPrix()+arti.getDescription()+arti.getProducts()+arti.getPrix()+"to our shop check our shop  and by somthing to let us help needy peapole");
 
         return productService.addProduct(arti);
@@ -176,10 +170,6 @@ public class ProductController implements ServletContextAware {
             e.printStackTrace();
         }
         arti.setPicture(newFileName);
-
-
-
-        
         return productService.editProduct(arti);
     }
 
@@ -201,7 +191,6 @@ public class ProductController implements ServletContextAware {
             // fi.add(Files.readAllBytes(Paths.get(context.getRealPath("/Imagess/")+file.getImage())));
             fi.add(Files.readAllBytes(Paths.get(context.getRealPath("/Imagess/") + file.getName())));
         }
-
         return fi;
     }
 
@@ -212,7 +201,6 @@ public class ProductController implements ServletContextAware {
         files = imageRepository.findByImage(product);
         return new ResponseEntity<>(files, HttpStatus.OK);
     }
-
     @GetMapping(path = "/getimage/{id}")
     public byte[] getPhotoProduct(@PathVariable("id") Long id) throws Exception {
         MultiPicture Article = imageRepository.findById(id).orElseThrow(() -> new Exception("File by id " + id + " was not found"));
@@ -241,8 +229,8 @@ public class ProductController implements ServletContextAware {
     }
 
     @GetMapping("prix/{minP}/{maxP}")
-    public List<Product> findByPrice(@PathVariable BigDecimal minP, @PathVariable BigDecimal maxP){
-        return productService.findByPrice(minP,maxP);
+    public List<Product> findByPrice(@PathVariable BigDecimal minP, @PathVariable BigDecimal maxP) {
+        return productService.findByPrice(minP, maxP);
     }
 
 }
