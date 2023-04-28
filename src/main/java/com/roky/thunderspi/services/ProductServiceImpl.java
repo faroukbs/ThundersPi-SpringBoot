@@ -25,12 +25,11 @@ import java.util.Optional;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
 public class ProductServiceImpl implements IProductService {
-
-    private final ProductRepo productRepo;
-
-    private final UserRepo userRepo;
+@Autowired
+    private  ProductRepo productRepo;
+    @Autowired
+    private  UserRepo userRepo;
 
     @Value("${app.TWILIO_AUTH_TOKEN}")
     private  String Service_TWILIO_AUTH_TOKEN;

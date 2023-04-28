@@ -2,18 +2,18 @@ package com.roky.thunderspi.controllers;
 
 import com.roky.thunderspi.entities.Product;
 import com.roky.thunderspi.services.WishListServiceImpl;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
-
 @RestController
 @RequestMapping("/favoriteProduct")
-//@CrossOrigin(origins = "*", allowedHeaders = "*")
-@AllArgsConstructor
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class WishListController {
+    @Autowired
     private WishListServiceImpl service;
+
 
     @GetMapping("/wishlist")
     public ResponseEntity<Set<Product>> returnWishlist() throws Exception {

@@ -12,6 +12,8 @@ import com.roky.thunderspi.dto.PaymentInfo;
 import com.roky.thunderspi.dto.Purchase;
 import com.roky.thunderspi.dto.PurchaseResponse;
 
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +23,10 @@ import java.util.*;
 @Service
 public class CheckoutServiceImpl implements ICheckoutService {
 
-    private IProductService productService;
-    private UserRepo customerRepository;
+
+    private  IProductService productService;
+
+    private  UserRepo customerRepository;
 
     public CheckoutServiceImpl(UserRepo customerRepository, IProductService productService, @Value("${stripe.key.secret}") String secretKey) {
         this.customerRepository = customerRepository;

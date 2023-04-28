@@ -20,12 +20,12 @@ public interface ProductRepo extends JpaRepository<Product,Long> {
 
     List<Product>findByPrixBetween(BigDecimal minP,BigDecimal maxP);
 
-   // @Modifying
-   // @Query(value="delete from wishlist where product_id = :id",nativeQuery = true)
-    //void removeFromWishListWhenIsSold(@Param("id") Long id);
+    @Modifying
+    @Query(value="delete from wishlist where product_id = :id",nativeQuery = true)
+    void removeFromWishListWhenIsSold(@Param("id") Long id);
 
-    //@Modifying
-    //@Query(value="delete from wishlist where product_id = :productId and client_id = :clientId",nativeQuery = true)
-    //void removeFromClientWishlist(@Param("productId") Long productId, @Param("clientId") Long clientId);
+    @Modifying
+    @Query(value="delete from wishlist where product_id = :productId and client_id = :clientId",nativeQuery = true)
+    void removeFromClientWishlist(@Param("productId") Long productId, @Param("clientId") Long clientId);
 
 }
