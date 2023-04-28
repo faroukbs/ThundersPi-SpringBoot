@@ -113,12 +113,13 @@ public class ProductController implements ServletContextAware {
         }
         System.out.println("Save Article 333333.............");
         arti.setPicture(newFileName);
+
         System.out.println("Save Article 333333.............");
         // arti.setProducts(photos);
         // User user = new User();
         //System.out.println(user.getPhone_number());
-        //  productService.SendSms("+21628608927",
-        //        "Hello we send you this sms to inform you that we have add  new product:"+ arti.getName()+arti.getPrix()+arti.getDescription()+arti.getProducts()+arti.getPrix()+"to our shop check our shop  and by somthing to let us help needy peapole");
+        productService.SendSms("+21628608927",
+                "Hello we send you this sms to inform you that we have add  new product:" + arti.getName() + arti.getPrix() + arti.getDescription() + arti.getProducts() + arti.getPrix() + "to our shop check our shop  and by somthing to let us help needy peapole");
 
         return productService.addProduct(arti);
     }
@@ -170,6 +171,8 @@ public class ProductController implements ServletContextAware {
             e.printStackTrace();
         }
         arti.setPicture(newFileName);
+
+
         return productService.editProduct(arti);
     }
 
@@ -191,6 +194,7 @@ public class ProductController implements ServletContextAware {
             // fi.add(Files.readAllBytes(Paths.get(context.getRealPath("/Imagess/")+file.getImage())));
             fi.add(Files.readAllBytes(Paths.get(context.getRealPath("/Imagess/") + file.getName())));
         }
+
         return fi;
     }
 
@@ -201,6 +205,7 @@ public class ProductController implements ServletContextAware {
         files = imageRepository.findByImage(product);
         return new ResponseEntity<>(files, HttpStatus.OK);
     }
+
     @GetMapping(path = "/getimage/{id}")
     public byte[] getPhotoProduct(@PathVariable("id") Long id) throws Exception {
         MultiPicture Article = imageRepository.findById(id).orElseThrow(() -> new Exception("File by id " + id + " was not found"));
@@ -208,13 +213,6 @@ public class ProductController implements ServletContextAware {
         return Files.readAllBytes(Paths.get(context.getRealPath("/Imagess/") + Article.getName()));
     }
 
-    @GetMapping("/catproducts/{id}")
-    public ResponseEntity<List<Product>> getAllProductByCategory(@PathVariable("id") Long id) throws Exception {
-        CategoryProduct category = productCategoryService.findProdById(id);
-        List<Product> products = productService.getAllProductByCategory(category);
-
-        return new ResponseEntity<>(products, HttpStatus.OK);
-    }
 
     @GetMapping(path = "/Imgarticle/{id}")
     public byte[] getProductImage(@PathVariable("id") Long id) throws Exception {
@@ -231,6 +229,14 @@ public class ProductController implements ServletContextAware {
     @GetMapping("prix/{minP}/{maxP}")
     public List<Product> findByPrice(@PathVariable BigDecimal minP, @PathVariable BigDecimal maxP) {
         return productService.findByPrice(minP, maxP);
+    }
+
+    @GetMapping("/catproducts/{id}")
+    public ResponseEntity<List<Product>> getAllProductByCategory(@PathVariable("id") Long id) throws Exception {
+        CategoryProduct category = productCategoryService.findProdById(id);
+        List<Product> products = productService.getAllProductByCategory(category);
+
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
 }
