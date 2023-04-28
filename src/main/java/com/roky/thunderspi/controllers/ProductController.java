@@ -123,8 +123,8 @@ public class ProductController implements ServletContextAware {
         // arti.setProducts(photos);
        // User user = new User();
         //System.out.println(user.getPhone_number());
-        productService.SendSms("+21628608927",
-                "Hello we send you this sms to inform you that we have add  new product:"+ arti.getName()+arti.getPrix()+arti.getDescription()+arti.getProducts()+arti.getPrix()+"to our shop check our shop  and by somthing to let us help needy peapole");
+      //  productService.SendSms("+21628608927",
+        //        "Hello we send you this sms to inform you that we have add  new product:"+ arti.getName()+arti.getPrix()+arti.getDescription()+arti.getProducts()+arti.getPrix()+"to our shop check our shop  and by somthing to let us help needy peapole");
 
         return productService.addProduct(arti);
     }
