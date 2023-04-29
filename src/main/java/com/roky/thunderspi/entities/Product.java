@@ -74,8 +74,8 @@ public class Product {
     @JoinTable(name = "WISHLIST", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "client_id"))
     private Set<User> whoWhishesThisProduct;
 
-
- @OneToMany(mappedBy = "procom")
+    @OneToMany(cascade=CascadeType.PERSIST,mappedBy = "procom",fetch=FetchType.LAZY)
+ @JsonManagedReference(value="prodcom")
  List<ProductComment> comments;
 
     private Double etoile;

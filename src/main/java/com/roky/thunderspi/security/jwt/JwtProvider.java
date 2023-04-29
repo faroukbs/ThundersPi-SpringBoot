@@ -46,23 +46,15 @@ public class JwtProvider implements IJwtProvider{
     @Value("${app.jwt.expiration-in-ms}")
     private int JWT_EXPIRATION_IN_MS;
 
-    private Key secretKey;
-
-    public JwtProvider() {
-        // Generate a secure signing key with HS512 algorithm and a size of 512 bits
-        this.secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
-    }
-
     @Override
     public String generateToken(UserPrincipal auth){
         String authorities = auth.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining());
         return Jwts.builder().setSubject(auth.getEmail()).claim("roles", authorities)
                 .claim("userId", auth.getId())
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION_IN_MS))
-                .signWith(secretKey)
+                .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
                 .compact();
     }
-
 
     @Override
     public Authentication getAuthentication(HttpServletRequest request){
@@ -82,7 +74,7 @@ public class JwtProvider implements IJwtProvider{
         if (username ==null){
             return null;
         }
-    return new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
+        return new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
     }
 
     @Override

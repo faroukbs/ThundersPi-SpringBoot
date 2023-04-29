@@ -1,6 +1,8 @@
 
 package com.roky.thunderspi.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
@@ -28,6 +30,7 @@ public class ProductComment {
 
     Long likes;
 
+    @JsonBackReference(value="prodcom")
     @ManyToOne
     Product procom;
 
