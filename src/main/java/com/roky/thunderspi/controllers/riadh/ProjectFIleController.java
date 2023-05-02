@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/projectFile")
 @RequiredArgsConstructor
+@CrossOrigin("http://localhost:4200")
 public class ProjectFIleController {
 
 
@@ -29,22 +30,49 @@ public class ProjectFIleController {
 
     private final IProjectService IProjectServiceImp;
 
-    @PostMapping("upload")
-    public ResponseEntity<ResponseMessage> uploadProjectFile(@RequestParam("file")MultipartFile file)
+
+    //TODO Change with before and after annotations to handle the file upload errors
+    //Upload without project linked
+    @PostMapping("/upload")
+    public ResponseEntity<ResponseMessage> uploadProjectFile(@RequestParam(value ="file")MultipartFile file)
     {
         String message = "";
-        try {
+
+                try{
             projectFileService.store(file);
 
             message = "Uploaded File successfully: " + file.getOriginalFilename();
-            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
-        }catch (Exception e)
-        {
-            message = "Could not upload file: " + file.getOriginalFilename() + "!";
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
-        }
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));}
+            catch (Exception e)
+                {
+                    message = "Could not upload file: " + file.getOriginalFilename() + "!";
+                    return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
+                }
+
+
+
     }
 
+    //Upload with project linked
+    @PostMapping("/upload{id}")
+    public ResponseEntity<ResponseMessage> uploadProjectFileToProject(@RequestParam("file")MultipartFile file,@PathVariable("id")Long id)
+    {
+        String message = "";
+            try{
+                projectFileService.storeToProject(file,id);
+
+                message = "Uploaded File successfully: " + file.getOriginalFilename();
+                return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));}
+            catch (Exception e)
+            {
+                message = "Could not upload file: " + file.getOriginalFilename() + "!";
+                return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
+            }
+
+
+    }
+
+    //Get All Files
     @GetMapping("/files")
     public ResponseEntity<List<ResponseFile>> getListProjectFiles(){
         List<ResponseFile> files = projectFileService.getAllFiles().map(projectFile ->
@@ -60,7 +88,7 @@ public class ProjectFIleController {
         return ResponseEntity.status(HttpStatus.OK).body(files);
     }
 
-    @GetMapping("/files/{id}")
+    @GetMapping("/files{id}")
     public ResponseEntity<byte[]> getFileById(@PathVariable Long id)
     {
         ProjectFile projectFile = projectFileService.getFile(id);
@@ -68,6 +96,8 @@ public class ProjectFIleController {
                 .body(projectFile.getData());
     }
 
+
+    //Get All Files by Project Id
     @GetMapping("/project/{id}")
     public ResponseEntity<List<ResponseFile>> getFilesByProjectId(@PathVariable Long id)
     {
@@ -83,4 +113,24 @@ public class ProjectFIleController {
         }).collect(Collectors.toList());
         return ResponseEntity.status(HttpStatus.OK).body(files);
     }
+
+
+    //Get Project Files by user ID, it uses the get ProjectsByTeacher method in IProjectService
+    //However it lacks the retrieval of the files that aren't linked to projects
+    @GetMapping("/project/{userId}")
+    public ResponseEntity<List<ResponseFile>> getProjectFilesByUserId(@PathVariable Long userId)
+    {
+        List<ResponseFile> files = IProjectServiceImp.getProjectsByTeacher(userId).flatMap(p->p.getProjectFiles().stream()).map(projectFile ->
+        {
+            String fileDownloadUri = ServletUriComponentsBuilder
+                    .fromCurrentContextPath()
+                    .path("/files")
+                    .path(projectFile.getId().toString())
+                    .toUriString();
+            return new ResponseFile(projectFile.getName(),fileDownloadUri,projectFile.getType(),projectFile.getData().length);
+
+        }).collect(Collectors.toList());
+        return ResponseEntity.status(HttpStatus.OK).body(files);
+    }
+
 }

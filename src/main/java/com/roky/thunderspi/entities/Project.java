@@ -8,9 +8,11 @@ import java.util.Set;
 @Entity
 public class Project {
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   private String name;
+
 
   private float maxMarks;
   @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
@@ -19,6 +21,15 @@ public class Project {
   @ManyToOne
   @JoinColumn(name = "course_id_course")
   private Course course;
+
+  public Course getCourse() {
+    return course;
+  }
+
+  public void setCourse(Course course) {
+    this.course = course;
+  }
+
   @ManyToOne(cascade = CascadeType.DETACH)
   @JoinColumn(name = "teacher_id")
   private User user;

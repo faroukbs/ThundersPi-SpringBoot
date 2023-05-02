@@ -5,6 +5,7 @@ import com.roky.thunderspi.entities.Project;
 import com.roky.thunderspi.services.riadh.IProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/project")
 @RequiredArgsConstructor
+@CrossOrigin("http://localhost:4200")
 public class ProjectController {
 
 
@@ -25,13 +27,16 @@ public class ProjectController {
     }
 
     @PostMapping
-    public void addProject(@RequestParam Project p)
+    @Transactional //Problem about linking the project files to the project
+    //waiting for the project files to be uploaded, getting an ID
+    //Having them assigned to the project
+    public Project addProject(@RequestBody Project p)
     {
-        projectService.addProject(p);
+        return projectService.addProject(p);
     }
 
     @PutMapping
-    public void updateProject(@RequestParam Project p)
+    public void updateProject(@RequestBody Project p)
     {
         projectService.updateProject(p);
     }
