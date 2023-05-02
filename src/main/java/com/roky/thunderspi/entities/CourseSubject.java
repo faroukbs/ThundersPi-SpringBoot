@@ -1,12 +1,12 @@
 package com.roky.thunderspi.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -18,4 +18,9 @@ public class CourseSubject {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long idCourseSubject;
     String subjectCategory;
+    Long idFile;
+    int countCourses;
+    @OneToMany(mappedBy = "courseSubject",cascade = CascadeType.REMOVE)
+    @JsonIgnore
+    Set<Course> courses;
 }

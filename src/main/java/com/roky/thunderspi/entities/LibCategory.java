@@ -2,10 +2,9 @@ package com.roky.thunderspi.entities;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+
+import javax.persistence.*;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -19,4 +18,7 @@ public class LibCategory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long idLibCategory;
     String categoryName;
+
+    @OneToMany(mappedBy = "libCategory",cascade = CascadeType.REMOVE)
+    Set<LibElement> libElements;
 }
