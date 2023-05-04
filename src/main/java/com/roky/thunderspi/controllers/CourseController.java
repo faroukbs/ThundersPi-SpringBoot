@@ -20,7 +20,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/course")
+@RequestMapping("/api/course")
 @AllArgsConstructor
 public class CourseController {
     private ICourseService iCourseService;

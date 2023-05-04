@@ -22,8 +22,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@RequestMapping("/subject")
+@RequestMapping("/api/subject")
 @AllArgsConstructor
+@CrossOrigin("*")
 public class CourseSubjectController {
     private ILibElementService iLibElementService;
     private LibFileServiceImpl libFileService;

@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/libFile")
+@RequestMapping("/api/libFile")
 @RequiredArgsConstructor
 public class LibFileContoller {
     private final ILibFileService LibFileServiceImpl;
