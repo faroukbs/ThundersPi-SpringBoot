@@ -62,6 +62,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 antMatchers("/api/states/**").permitAll().
                 antMatchers("/api/checkout/**").permitAll()
                 .antMatchers("/api/checkout/purchase").permitAll()
+                .antMatchers("/**").permitAll()
+                .antMatchers("/post/**").permitAll()
+                .antMatchers("/File/**").permitAll()
+                .antMatchers("/api/comment/**").permitAll()
                 .antMatchers("/api/internal/**").hasRole(Role.ESTABLISHMENT.name())
                 .antMatchers("/api/orders/search/findByCustomerEmailOrderByDateCreatedDesc/**").permitAll()
                 .antMatchers("/favoriteProduct/**").permitAll()

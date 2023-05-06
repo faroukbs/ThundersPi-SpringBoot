@@ -21,7 +21,7 @@ import java.util.Map;
 @RequestMapping("/api/posts")
 public class BlogPostController {
 
-    @Autowired
+  /*  @Autowired
     private BlogPostServiceImpl postService;
 private PostRepo postRepo;
 
@@ -59,5 +59,5 @@ private PostRepo postRepo;
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);
         return response;
-    }
+    }*/
 }

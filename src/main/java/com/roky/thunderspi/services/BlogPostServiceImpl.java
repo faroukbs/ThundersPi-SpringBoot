@@ -1,108 +1,151 @@
 package com.roky.thunderspi.services;
 
-import com.roky.thunderspi.dto.PostDto;
 import com.roky.thunderspi.entities.Post;
-import com.roky.thunderspi.exception.PostNotFoundException;
+import com.roky.thunderspi.entities.PostDislike;
+import com.roky.thunderspi.entities.PostLike;
+import com.roky.thunderspi.entities.User;
+import com.roky.thunderspi.repositories.DislikeRepository;
+import com.roky.thunderspi.repositories.LikeRepository;
 import com.roky.thunderspi.repositories.PostRepo;
+import com.roky.thunderspi.repositories.UserRepo;
+import lombok.extern.slf4j.Slf4j;
+
+import org.jsoup.Jsoup;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
+import org.jsoup.nodes.Document;
 
 import java.time.Instant;
-import java.util.Date;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
-
+@Slf4j
 @Service
 public class BlogPostServiceImpl implements IBlogPostService {
 
+    @Autowired
+    private PostRepo postRepo;
 
     @Autowired
-    private PostRepo postRepository;
+    private LikeRepository likeRepo;
+    @Autowired
+    private DislikeRepository dislikeRepo;
 
     @Autowired
-    private AuthenticationService authenticationService;
+    UserRepo utiRepo;
 
-    public void createPost(PostDto postDto){
-        Post post = new Post();
-        post.setTitle(postDto.getTitle());
-        post.setContent(postDto.getContent());
-        User userName =  authenticationService.getCurrentUser().orElseThrow(
-                ()->new IllegalArgumentException("No user logged in"));
-        post.setUserName(userName.getUsername());
-        post.setCreated_At(Instant.now());
 
-        postRepository.save(post);
-
+    @Override
+    public List<Post> findAllPosts() {
+        List pl = new ArrayList<Post>();
+        for(Post p :postRepo.findAll() ){
+            p.setContent(convert(p.getContent()));
+            pl.add(p);
+        }
+        return pl;
     }
 
-    public List<PostDto> showAllPosts() {
-        List<Post> posts = postRepository.findAll();
-        return posts.stream().map(this::mapFromPostToDto).collect(toList());
+    public static String convert(String html) {
+        Document document = (Document) Jsoup.parse(html);
+        String text = document.text();
+        return text;
+    }
+
+    @Override
+    public Post findPostsById(Long postId) {
+        Post p=postRepo.findById(postId).orElse(null);
+        //	p.setContent(convert(p.getContent()));
+        return p;
 
     }
 
     @Override
-    public PostDto readSinglePost(Long id) {
-        Post post = postRepository.findById(id).orElseThrow(() -> new PostNotFoundException("For id" + id));
+    public Post addPost(Post post) {
+        Instant instant = Instant.now(); // Obtenir l'instant actuel
+        ZoneId zoneId = ZoneId.systemDefault(); // Obtenir le fuseau horaire par défaut
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").withZone(zoneId); // Créer un formateur de date/heure
 
-
-        return mapFromPostToDto(post);
-    }
-
-
-    @Override
-    public String deletePost(long id) {
-        return null;
+        String formattedDate = formatter.format(instant); // Convertir l'instant en une chaîne de caractères formatée
+        post.setCreated_At(formattedDate);
+        return postRepo.save(post);
     }
 
     @Override
-    public Post getSinglePost(Long id) {
-        Post post = postRepository.findById(id).orElseThrow(() -> new PostNotFoundException("For id" + id));
+    public Post editPost(Post post,Long postid) {
+        Post p = postRepo.findById(postid).orElse(null);
+        p.setContent(post.getContent());
+        p.setTitle(post.getTitle());
 
-
-        return post;
+        return postRepo.save(p);
     }
 
-    private PostDto mapFromPostToDto(Post post) {
-
-        PostDto postDto = new PostDto();
-        postDto.setId(post.getId());
-        postDto.setTitle(post.getTitle());
-        postDto.setContent(post.getContent());
-        postDto.setUserName(post.getUserName());
-
-        return postDto;
-    }
-
-
-    private Post mapFromPostDtoToPost(PostDto postDto){
-
-        Post post =  new Post();
-        post.setTitle(postDto.getTitle());
-        post.setContent(postDto.getContent());
-        User loggedInUser = authenticationService.getCurrentUser().orElseThrow(() -> new IllegalArgumentException("User not found"));
-        post.setCreated_At(Instant.now());
-        post.setUserName(loggedInUser.getUsername());
-        post.setUpdated_At(Instant.now());
-
-        return post;
-
+    @Override
+    public void deletePost(Long postId) {
+        postRepo.deleteById(postId);
 
     }
 
-    public Post getPost(Long id) {
-        return this.postRepository.findById(id).orElse(null);
-    }
-    public Post savePost(Post post) {
-        return this.postRepository.save(post);
+    ///////////// Like & Dislike//////////
+    @Override
+    public void addLike(Long idPublicaiton, Long idUser) {
+        log.info("idPublicaiton"+idPublicaiton+"idUser"+idUser);
+        PostLike lk = new PostLike();
+        Post publication = postRepo.findById(idPublicaiton).orElse(null);
+        User user = utiRepo.findById(idUser).orElse(null);
+        PostLike like = likeRepo.findByPostlikeAndUtilis(publication, user);
+        log.info("like"+like);
+        PostDislike dislike = dislikeRepo.findByPostdislikeAndUtilis(publication, user);
+        log.info("dislike"+dislike);
+        lk.setPostlike(publication);
+        lk.setUtilis(user);
+        if (like == null && dislike == null) {
+            likeRepo.save(lk);
+        } else if (like == null && dislike != null) {
+            dislike.setPostdislike(null);
+            dislike.setUtilis(null);
+            dislikeRepo.deleteById(dislike.getIdDisLike());
+            likeRepo.save(lk);
+        } else {
+            likeRepo.delete(like);
+        }
     }
 
-    public String deletePost(Long id) {
-        Post post = this.getPost(id);
-        post.setDeleted_at(new Date());
-        this.savePost(post);
-        return new String("Post deleted");
+    @Override
+    public void addDislike(Long idPublicaiton, Long idUser) {
+        PostDislike lk = new PostDislike();
+        Post publication = postRepo.findById(idPublicaiton).orElse(null);
+        User user = utiRepo.findById(idUser).orElse(null);
+        PostLike like = likeRepo.findByPostlikeAndUtilis(publication, user);
+        log.info("like"+like);
+        PostDislike dislike = dislikeRepo.findByPostdislikeAndUtilis(publication, user);
+        log.info("dislike"+dislike);
+        lk.setPostdislike(publication);
+        lk.setUtilis(user);
+        if (like == null && dislike == null) {
+            dislikeRepo.save(lk);
+        } else if (dislike == null && like != null) {
+            like.setPostlike(null);
+            like.setUtilis(null);
+            likeRepo.deleteById(like.getIdLike());
+            dislikeRepo.save(lk);
+        } else {
+            dislikeRepo.delete(dislike);
+        }
     }
+
+    /////////////////////////Nombres Like , Dislikes , Comments////////////////
+    @Override
+    public int nbrLikeByPub(Long idPublicaiton) {
+        Post publication = postRepo.findById(idPublicaiton).orElse(null);
+        return publication.getLikes().size();
+    }
+
+    @Override
+    public int nbrDisLikeByPub(Long idPublicaiton) {
+        Post publication = postRepo.findById(idPublicaiton).orElse(null);
+        return publication.getDislikes().size();
+    }
+
 }

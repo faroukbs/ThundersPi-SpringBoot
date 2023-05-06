@@ -6,17 +6,18 @@ import com.roky.thunderspi.entities.Post;
 import java.util.List;
 
 public interface IBlogPostService {
+    List<Post> findAllPosts();
 
-    void createPost(PostDto postDto);
 
+    Post findPostsById(Long postId);
+    Post addPost(Post post);
+    Post editPost(Post p,Long postId);
+    void deletePost(Long postId);
 
-    List<PostDto> showAllPosts();
-
-    PostDto readSinglePost(Long id);
-
-    String deletePost(long id);
-
-    Post getSinglePost(Long id);
+    public void addLike(Long postId, Long idUser);
+    public void addDislike(Long postId, Long idUser);
+    public int nbrLikeByPub(Long postId);
+    public int nbrDisLikeByPub(Long postId);
 
 
 }

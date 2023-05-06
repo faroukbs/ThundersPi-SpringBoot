@@ -1,5 +1,6 @@
 package com.roky.thunderspi.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
@@ -80,6 +81,18 @@ public class User {
 
     @ManyToMany(mappedBy = "whoWhishesThisProduct")
     public Set<Product> productsWished;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="user")
+    @JsonIgnore
+    Set<Comment> comments;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="utilis")
+    @JsonIgnore
+    private Set<PostLike> Likes;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="utilis")
+    @JsonIgnore
+    private Set<PostDislike> dislikes;
+
 
 
 

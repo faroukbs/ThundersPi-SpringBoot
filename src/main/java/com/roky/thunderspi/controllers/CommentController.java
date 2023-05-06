@@ -14,94 +14,79 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import com.roky.thunderspi.entities.*;
+import com.roky.thunderspi.message.ResponseMessage;
+import com.roky.thunderspi.repositories.*;
+import com.roky.thunderspi.services.*;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+@CrossOrigin(origins = "http://localhost:4200/",exposedHeaders="Access-Control-Allow-Origin" )
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/comment")
 public class CommentController {
 
-    private ICommentService commentaireService;
-    private IBlogPostService iBlogPostService;
-    private UserServiceImpl userService;
 
-    @GetMapping("/getall")
+    @Autowired
+    PostRepo postRepo;
+    @Autowired
+    CommentRepo commentRepo;
+    @Autowired
+    UserRepo userRepo;
+    @Autowired
+    CommentServiceImpl cmtservice;
+
+
+
+    @PostMapping("/addcmt/{idpost}/{iduser}")
+    public Comment addCommentaire(@RequestBody Comment comment, @PathVariable("idpost") Long post, @PathVariable("iduser") Long user) {
+        return cmtservice.addComment(comment, post, user);
+    }
+
+
+
+    @GetMapping("/getallcmt")
     @ResponseBody
     public List<Comment> getAll() {
-        List<Comment> comments = commentaireService.retrieveAllCommentaires();
-        return comments;
-    }
-    public void add(@RequestBody Comment c) throws Exception {
-        List<String> badWords = Collections.unmodifiableList(Arrays.asList("bob", "fuck", "shit", "dick", "sh*t", "ass", "bitch", "bastard", "cunt", "trash", "wanker", "piss", "pussy", "twat", "crap", "arsehole", "gash", "prick", "cock", "minge", "nigga", "slut", "damn", "sucker", "cracker", "poop", "puup", "boob", "buub", "f*ck", "b*tch", "3asba", "nayek", "nikomok", "9a7ba", "zebi", "sorm"));
-        Post p = iBlogPostService.getSinglePost(c.getPost().getId());
 
-        if (p == null) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "NULL");
-        }
-
-
-        if (c.getContent().replaceAll("\\s+", "").equals("")) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_ACCEPTABLE, "Empty");
-        }
-
-        for (String bW : badWords) {
-            if (c.getContent().toLowerCase().replaceAll("\\s+", "").replaceAll("1", "i").replaceAll("!", "i").replaceAll("3", "e").replaceAll("4", "a").replaceAll("@", "a").replaceAll("5", "s").replaceAll("7", "t").replaceAll("0", "o").replaceAll("9", "g").contains(bW)) {
-                throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Bad Boy");
-            }
-        }
-
-        for (Comment com : p.getComments()) {
-            if (c.getContent().equals(com.getContent())) {
-                throw new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Duplicated");
-            }
-        }
-
+        return cmtservice.retrieveAllCommentaires();
     }
 
     @GetMapping("/retrieve-commentaire/{commentaire-id}")
     @ResponseBody
     public Comment retrieveCommentaire(@PathVariable("commentaire-id") Long commentaireId) {
-        return commentaireService.retrieveCommentaire(commentaireId);
+        return cmtservice.retrieveCommentaire(commentaireId);
     }
+    @GetMapping("/getallcmtbypost/{idpost}")
+    @ResponseBody
+    public Set<Comment> getcmtbypost(@PathVariable("idpost") Long postid) {
 
+        return cmtservice.getcmtbypost(postid);
+    }
+    @PutMapping("/update-cmt/{commentaire-id}")
+    public Comment updateComment(@RequestBody Comment c,@PathVariable("commentaire-id") Long commentaireId) {
 
+        return cmtservice.updateCommentaire(c, commentaireId);
+    }
     // http://localhost:8081/remove-commentaire/{commentaire-id}
-    @DeleteMapping("/remove-client/{commentaire-id}")
+    @DeleteMapping("/remove-cmt/{commentaire-id}")
     @ResponseBody
     public void removeCommentaire(@PathVariable("commentaire-id") Long commentaireId) {
-        commentaireService.deleteCommentaire(commentaireId);
+        cmtservice.deleteCommentaire(commentaireId);
     }
 
     // http://localhost:8081/modify-commentaire
-    @PutMapping("/modify-commentaire")
-    @ResponseBody
-    public Comment modifyClient(@RequestBody Comment c) throws Exception {
-        List<String> badWords=Collections.unmodifiableList(Arrays.asList("bob","fuck","shit","dick","sh*t","ass","bitch","bastard","cunt","trash","wanker","piss","pussy","twat","crap","arsehole","gash","prick","cock","minge","nigga","slut","damn","sucker","cracker","poop","puup","boob","buub","f*ck","b*tch"));
-        Post p=iBlogPostService.getSinglePost(c.getPostcom().getId());
-
-        if(p==null){throw new ResponseStatusException(
-                HttpStatus.NOT_FOUND, "NULL");}
-
-
-        if(c.getContent().replaceAll("\\s+","").equals("")){
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_ACCEPTABLE, "Empty");
-        }
-
-        for(String bW : badWords){
-            if(c.getContent().toLowerCase().replaceAll("\\s+","").replaceAll("1", "i").replaceAll("!", "i").replaceAll("3", "e").replaceAll("4", "a").replaceAll("@", "a").replaceAll("5", "s").replaceAll("7", "t").replaceAll("0", "o").replaceAll("9", "g").contains(bW)){throw new ResponseStatusException(
-                    HttpStatus.NOT_ACCEPTABLE, "Bad Boy");}
-        }
-
-        for(Comment com :p.getComments()){
-            if(c.getContent().equals(com.getContent()) ){
-                throw new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Duplicated");
-            }
-        }
-        return commentaireService.updateCommentaire(c);
-    }
-
 
 }

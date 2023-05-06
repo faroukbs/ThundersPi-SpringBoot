@@ -17,6 +17,5 @@ public class Actuality {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long idActuality;
 
-    @OneToMany(mappedBy = "actuality", cascade = CascadeType.REMOVE)
-    private Set<Post> blogPostset;
+
 }

@@ -1,73 +1,63 @@
 package com.roky.thunderspi.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
 
+import java.time.Instant;
+import java.util.*;
+
+@Builder
 @Getter
 @Setter
-@ToString
-@Entity
-@EqualsAndHashCode
-@Table
+@AllArgsConstructor
+@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Entity
+@EntityListeners(AuditingEntityListener.class)
+@JsonIgnoreProperties(ignoreUnknown = true)
+
 public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long postId;
 
-    @NotBlank
-    @Column
     private String title;
 
-    @Lob // it means data can take up a lot of space
-    @Column
-    @NotEmpty
+
     private String content;
 
 
     private String image;
 
-    @Column
-    private Instant created_At;
 
-    @Column
-    private Instant updated_At;
+    private String created_At;
 
-    @Column(nullable = true)
-    private Date deleted_at;
-
+    @JsonIgnore
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private FileDB files;
     @ManyToOne
     private User user;
 
-    @Column
-    @NotBlank
-    private String userName;
-    @OneToMany(mappedBy = "postcom")
-    private List<Comment> comments = new ArrayList<Comment>();
+    @OneToMany(mappedBy = "post",cascade = CascadeType.REMOVE)
+    @JsonManagedReference
+    Set<Comment> comment;
 
-    public List<Comment> getComments() {
-        return comments;
-    }
+    @OneToMany(mappedBy = "postlike",cascade = CascadeType.REMOVE)
+    @JsonIgnore
+    Set<PostLike> likes;
 
-    public Post() {
-    }
+    @OneToMany(mappedBy = "postdislike",cascade = CascadeType.REMOVE)
+    @JsonIgnore
+    Set<PostDislike> dislikes;
 
-    public Post(String title, String content, String image, User user) {
-        this.title = title;
-        this.content = content;
-        this.image = image;
-        this.user = user;
-    }
-    @ManyToOne
-    private Actuality actuality;
 }
