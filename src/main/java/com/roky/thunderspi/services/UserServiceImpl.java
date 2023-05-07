@@ -26,13 +26,13 @@ import java.util.Optional;
 public class UserServiceImpl  {
   //  private UserRepo userRepo;
 
-    @Autowired
+
     private UserRepo userRepository;
 
-    @Autowired
+
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
+
     private JavaMailSender mailSender;
 
 
