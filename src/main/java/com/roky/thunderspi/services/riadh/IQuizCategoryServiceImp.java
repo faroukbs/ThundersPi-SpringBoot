@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -15,26 +16,26 @@ public class IQuizCategoryServiceImp implements IQuizCategoryService{
     private final QuizCategoryRepository quizCategoryRepository;
     @Override
     public QuizCategory getQuizCategoryById(Long id) {
-        return null;
+        return quizCategoryRepository.findById(id).orElse(null);
     }
 
     @Override
     public Set<QuizCategory> findAll() {
-        return null;
+        return quizCategoryRepository.findAll().stream().collect(Collectors.toSet());
     }
 
     @Override
     public void deleteQuizCategory(Long id) {
-
+        quizCategoryRepository.deleteById(id);
     }
 
     @Override
-    public QuizCategory updateQuestion(QuizCategory q) {
-        return null;
+    public QuizCategory updateQuizCategory(QuizCategory q) {
+        return quizCategoryRepository.save(q);
     }
 
     @Override
-    public QuizCategory addQuestion(QuizCategory q) {
-        return null;
+    public QuizCategory addQuizCategory(QuizCategory q) {
+        return quizCategoryRepository.save(q);
     }
 }

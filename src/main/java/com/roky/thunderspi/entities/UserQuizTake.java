@@ -1,6 +1,7 @@
 package com.roky.thunderspi.entities;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 public class UserQuizTake {
@@ -17,6 +18,16 @@ public class UserQuizTake {
     @ManyToOne
     @JoinColumn(name = "quiz_id")
     private Quiz quiz;
+
+    public Date getDateTaken() {
+        return dateTaken;
+    }
+
+    public void setDateTaken(Date dateTaken) {
+        this.dateTaken = dateTaken;
+    }
+
+    private Date dateTaken;
 
     public Long getId() {
         return id;

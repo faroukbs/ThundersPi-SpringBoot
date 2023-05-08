@@ -20,4 +20,28 @@ public class QuizCategory {
     Long idQuizCategory;
     String title;
     String description;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Long getIdQuizCategory() {
+        return idQuizCategory;
+    }
+
+    public void setIdQuizCategory(Long idQuizCategory) {
+        this.idQuizCategory = idQuizCategory;
+    }
 }

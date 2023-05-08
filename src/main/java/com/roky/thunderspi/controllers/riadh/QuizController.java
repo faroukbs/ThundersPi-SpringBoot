@@ -6,14 +6,21 @@ import com.roky.thunderspi.services.riadh.IQuizService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/quiz")
 @RequiredArgsConstructor
 public class QuizController {
     private final IQuizService quizService;
 
-    //TODO getAll
 
+    @GetMapping
+    public Set<Quiz> getAll()
+    {
+        return quizService.getAllQuiz().stream().collect(Collectors.toSet());
+    }
     @GetMapping("/{id}")
     public Quiz getQuiz(Long id)
     {

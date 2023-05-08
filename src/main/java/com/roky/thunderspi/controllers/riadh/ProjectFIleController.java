@@ -71,6 +71,23 @@ public class ProjectFIleController {
 
 
     }
+    @PostMapping("/uploadSub{id}")
+    public ResponseEntity<ResponseMessage> uploadProjectFileToProjectSub(@RequestParam("file")MultipartFile file,@PathVariable("id")Long id)
+    {
+        String message = "";
+        try{
+            projectFileService.storeToProjectSub(file,id);
+
+            message = "Uploaded File successfully: " + file.getOriginalFilename();
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));}
+        catch (Exception e)
+        {
+            message = "Could not upload file: " + file.getOriginalFilename() + "!";
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
+        }
+
+
+    }
 
     //Get All Files
     @GetMapping("/files")

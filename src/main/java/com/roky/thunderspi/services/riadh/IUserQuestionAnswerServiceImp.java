@@ -29,6 +29,11 @@ public class IUserQuestionAnswerServiceImp implements IUserQuestionAnswerService
     }
 
     @Override
+    public UserQuestionAnswer findById(Long id) {
+        return userQuestionAnswerRepository.findById(id).orElse(null);
+    }
+
+    @Override
     public Set<UserQuestionAnswer> findAllbyQuestion(Long questionId) {
         return userQuestionAnswerRepository.findAll().stream().filter(q ->q.getQuestion().getId().equals(questionId)).collect(Collectors.toSet());
     }
@@ -36,6 +41,12 @@ public class IUserQuestionAnswerServiceImp implements IUserQuestionAnswerService
     @Override
     public Set<UserQuestionAnswer> findAllbyQuiz(Long quizId) {
         return userQuestionAnswerRepository.findAll().stream().filter(q -> q.getQuestion().getQuiz().getId().equals(quizId)).collect(Collectors.toSet());
+    }
+
+    @Override
+    public void delete(Long id)
+    {
+        userQuestionAnswerRepository.deleteById(id);
     }
 
 

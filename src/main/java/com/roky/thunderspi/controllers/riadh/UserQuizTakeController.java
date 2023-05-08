@@ -1,18 +1,52 @@
 package com.roky.thunderspi.controllers.riadh;
-//TODO Configure UserQuizTake
 
+
+import com.roky.thunderspi.entities.UserQuizTake;
 import com.roky.thunderspi.services.riadh.IUserQuizTakeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/userQuizTake")
 public class UserQuizTakeController {
     private final IUserQuizTakeService userQuizTakeService;
 
-    /* TODO Get All
-    Get by ID
-    Post
-    Put
-    Delete */
+
+
+    @GetMapping
+    public Set<UserQuizTake> getAll()
+    {
+        return userQuizTakeService.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public UserQuizTake getById(@PathVariable("id") Long id)
+    {
+        return userQuizTakeService.findById(id);
+    }
+
+    @PostMapping
+    public UserQuizTake add(@RequestBody UserQuizTake userQuizTake)
+    {
+        return userQuizTakeService.addQuizTake(userQuizTake);
+    }
+
+    @PutMapping
+    public UserQuizTake update(@RequestBody UserQuizTake userQuizTake)
+    {
+        return userQuizTakeService.updateQuizTake(userQuizTake);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable("id") Long id)
+    {
+        userQuizTakeService.deleteQuizTake(id);
+    }
+
+
+
+
 }

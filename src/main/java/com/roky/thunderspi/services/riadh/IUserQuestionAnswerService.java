@@ -12,7 +12,11 @@ public interface IUserQuestionAnswerService {
     public UserQuestionAnswer updateQuestion(UserQuestionAnswer q);
     public Set<UserQuestionAnswer>  findAll();
 
+    public UserQuestionAnswer findById(Long id);
+
     public Set<UserQuestionAnswer> findAllbyQuestion(Long questionId);
     public Set<UserQuestionAnswer> findAllbyQuiz(Long quizId);
+
+    public void delete(Long id);
 
 }

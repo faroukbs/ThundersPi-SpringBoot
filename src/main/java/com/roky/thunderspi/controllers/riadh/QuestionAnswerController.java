@@ -1,6 +1,6 @@
 package com.roky.thunderspi.controllers.riadh;
 
-//TODO Configure QuestionAnswerController
+
 
 import com.roky.thunderspi.entities.QuestionAnswer;
 import com.roky.thunderspi.services.riadh.IQuestionAnswerService;
@@ -23,7 +23,6 @@ private final IQuestionAnswerService questionAnswerServiceImp;
     return questionAnswerServiceImp.findbyId(id);
 }
 
-/* TODO postMapping */
 @PostMapping
     public QuestionAnswer addQuestionAnswer(@RequestParam QuestionAnswer q)
 {

@@ -3,8 +3,10 @@ package com.roky.thunderspi.services.riadh;
 
 import com.roky.thunderspi.entities.Project;
 import com.roky.thunderspi.entities.ProjectFile;
+import com.roky.thunderspi.entities.ProjectSubmission;
 import com.roky.thunderspi.repositories.riadh.ProjectFileRepository;
 import com.roky.thunderspi.repositories.riadh.ProjectRepository;
+import com.roky.thunderspi.repositories.riadh.ProjectSubmissionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,8 @@ public class IProjectFileServiceImp implements IProjectFileService {
     private final ProjectFileRepository projectFileRepository;
     private final ProjectRepository projectRepository;
 
+    private final ProjectSubmissionRepository projectSubmissionRepository;
+
     public ProjectFile store(MultipartFile file ) throws IOException
     {
         String filename = StringUtils.cleanPath(file.getOriginalFilename());
@@ -39,6 +43,17 @@ public class IProjectFileServiceImp implements IProjectFileService {
     {
         Assert.notNull(id, "You need to add to an existing project");
         Project p = projectRepository.findById(id).orElse(null);
+        Assert.notNull(p, "Project not found");
+        String filename = StringUtils.cleanPath(file.getOriginalFilename());
+        ProjectFile projectFile = new ProjectFile(filename,file.getContentType(), file.getBytes());
+        p.getProjectFiles().add(projectFile);
+        return projectFileRepository.save(projectFile);
+    }
+    @Transactional
+    public ProjectFile storeToProjectSub(MultipartFile file, Long id ) throws  IOException
+    {
+        Assert.notNull(id, "You need to add to an existing project");
+        ProjectSubmission p = projectSubmissionRepository.findById(id).orElse(null);
         Assert.notNull(p, "Project not found");
         String filename = StringUtils.cleanPath(file.getOriginalFilename());
         ProjectFile projectFile = new ProjectFile(filename,file.getContentType(), file.getBytes());
