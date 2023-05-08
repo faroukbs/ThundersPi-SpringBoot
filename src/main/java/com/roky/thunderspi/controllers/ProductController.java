@@ -10,11 +10,13 @@ import com.roky.thunderspi.entities.User;
 import com.roky.thunderspi.repositories.MultiPictureRepo;
 import com.roky.thunderspi.repositories.ProductRepo;
 import com.roky.thunderspi.services.*;
+import com.roky.thunderspi.util.FileUploadUtil;
 import lombok.AllArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.multipart.MultipartFile;
@@ -78,6 +80,14 @@ public class ProductController implements ServletContextAware {
 
         Product arti = new ObjectMapper().readValue(product, Product.class);
         boolean isExit = new File(context.getRealPath("/Imagess/")).exists();
+        String fileN = StringUtils.cleanPath(image.getOriginalFilename());
+        arti.setPicture(fileN);
+        System.out.println("====================");
+
+        System.out.println(arti.getId());
+        String uploadDir = "Imagess/" + arti.getId();
+        System.out.println(uploadDir);
+        FileUploadUtil.saveFile(uploadDir, fileN, image);
         if (!isExit) {
             new File(context.getRealPath("/Imagess/")).mkdir();
             System.out.println("mk dir Imagess.............");
@@ -118,8 +128,8 @@ public class ProductController implements ServletContextAware {
         // arti.setProducts(photos);
         // User user = new User();
         //System.out.println(user.getPhone_number());
-       // productService.SendSms("+21628608927",
-         //       "Hello we send you this sms to inform you that we have add  new product:  " + arti.getName() + " with a price :  "+ arti.getPrix() +  "  " + arti.getDescription() + arti.getProducts() +  "to our shop check our shop  and by somthing to let us help needy peapole");
+        // productService.SendSms("+21628608927",
+        //       "Hello we send you this sms to inform you that we have add  new product:  " + arti.getName() + " with a price :  "+ arti.getPrix() +  "  " + arti.getDescription() + arti.getProducts() +  "to our shop check our shop  and by somthing to let us help needy peapole");
 
         return productService.addProduct(arti);
     }
@@ -174,6 +184,9 @@ public class ProductController implements ServletContextAware {
 
 
         return productService.editProduct(arti);
+
+
+
     }
 
     @GetMapping("/find/{id}")
@@ -182,21 +195,21 @@ public class ProductController implements ServletContextAware {
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
-    @GetMapping(path = "/Imgarticles/{id}")
-    public List<byte[]> getPhoto(@PathVariable("id") Long id) throws Exception {
-        ArrayList<MultiPicture> files = new ArrayList<MultiPicture>();
-        Product product = productService.findProdById(id);
-        List<byte[]> fi = new ArrayList<>();
-        files = imageRepository.findByImage(product);
-        System.out.println(files);
+    //@GetMapping(path = "/Imgarticles/{id}")
+    //public List<byte[]> getPhoto(@PathVariable("id") Long id) throws Exception {
+    //  ArrayList<MultiPicture> files = new ArrayList<MultiPicture>();
+    //  Product product = productService.findProdById(id);
+    //  List<byte[]> fi = new ArrayList<>();
+    //  files = imageRepository.findByImage(product);
+    //  System.out.println(files);
 
-        for (MultiPicture file : files) {
-            // fi.add(Files.readAllBytes(Paths.get(context.getRealPath("/Imagess/")+file.getImage())));
-            fi.add(Files.readAllBytes(Paths.get(context.getRealPath("/Imagess/") + file.getName())));
-        }
+    //  for (MultiPicture file : files) {
+    //      // fi.add(Files.readAllBytes(Paths.get(context.getRealPath("/Imagess/")+file.getImage())));
+    //      fi.add(Files.readAllBytes(Paths.get(context.getRealPath("/Imagess/") + file.getName())));
+    //  }
 
-        return fi;
-    }
+    //  return fi;
+    // }
 
     @GetMapping("/images/{id}")
     public ResponseEntity<List<MultiPicture>> getImagesByProduct(@PathVariable("id") Long id) throws Exception {
@@ -209,15 +222,20 @@ public class ProductController implements ServletContextAware {
     @GetMapping(path = "/getimage/{id}")
     public byte[] getPhotoProduct(@PathVariable("id") Long id) throws Exception {
         MultiPicture Article = imageRepository.findById(id).orElseThrow(() -> new Exception("File by id " + id + " was not found"));
-        ;
+
         return Files.readAllBytes(Paths.get(context.getRealPath("/Imagess/") + Article.getName()));
     }
 
 
+  //  @GetMapping(path = "/Imgarticle/{id}")
+  //  public byte[] getProductImage(@PathVariable("id") Long id) throws Exception {
+  //      Product Article = productService.findProdById(id);
+  //      return Files.readAllBytes(Paths.get(context.getRealPath("/Imagess/") + Article.getPicture()));
+  //  }
     @GetMapping(path = "/Imgarticle/{id}")
-    public byte[] getProductImage(@PathVariable("id") Long id) throws Exception {
+    public byte[] getPhoto(@PathVariable("id") Long id) throws Exception {
         Product Article = productService.findProdById(id);
-        return Files.readAllBytes(Paths.get(context.getRealPath("/Imagess/") + Article.getPicture()));
+        return Files.readAllBytes(Paths.get("Imagess/null/" + Article.getPicture()));
     }
 
     @GetMapping("/add-etoile/{produit-id}/{client-id}/{rev}")
