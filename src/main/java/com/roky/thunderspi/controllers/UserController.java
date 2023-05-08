@@ -61,4 +61,9 @@ public class UserController {
             return "verify_fail";
         }
     }
+    @DeleteMapping("/delete/{id}")
+    public void delete(@PathVariable long id) {
+
+        userService.delete(id);
+    }
 }

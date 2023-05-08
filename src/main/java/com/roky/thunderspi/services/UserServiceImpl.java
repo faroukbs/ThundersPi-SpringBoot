@@ -190,6 +190,9 @@ public class UserServiceImpl  {
         customer.setResetPasswordToken(null);
         userRepository.save(customer);
     }
+    public void delete(long id){
+        userRepository.deleteById(id);
+    }
 
 }
 
