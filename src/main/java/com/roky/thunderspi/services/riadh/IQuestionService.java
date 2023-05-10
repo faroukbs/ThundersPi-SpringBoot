@@ -12,4 +12,6 @@ public interface IQuestionService {
     public void deleteQuestion(Long id);
     public Question updateQuestion(Question q);
     public Question addQuestion(Question q);
+
+    public Set<Question> getQuestionsByCorrectAnswers();
 }

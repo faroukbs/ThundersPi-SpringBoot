@@ -6,6 +6,8 @@ import com.roky.thunderspi.services.riadh.IQuizService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -50,5 +52,19 @@ public class QuizController {
     {
         return quizService.getQuizByCourseId(id);
     }
+
+    @GetMapping("/takes/{takes}")
+    public Set<Quiz> getQuizByNumberOfTakes(@PathVariable("takes") int takes)
+    {
+        return quizService.getQuizByNumberOfTakes(takes);
+    }
+
+    @GetMapping("/stats/{id}")
+    public Map<String, Number> getQuizStats(@PathVariable Long id)
+    {
+        return quizService.getQuizStats(id);
+    }
+
+
 
 }

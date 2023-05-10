@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -72,5 +73,35 @@ public class IQuizServiceImp implements IQuizService {
     public int getNumberOfTakes(Quiz z)
     {
         return userQuizTakeRepository.findAll().stream().filter(qt->qt.getQuiz().getId() == z.getId()).collect(Collectors.toSet()).size();
+    }
+
+    public Map<String, Number> getQuizStats(Long id) {
+        Quiz q = quizRepository.findById(id).orElse(null);
+        Assert.notNull(q,"Quiz not found");
+        Map<String, Number> map = Map.of(
+                "quiz", q.getId(),
+                "takes", getNumberOfTakes(q),
+                "average", getAverage(q),
+                "max", getMax(q),
+                "min", getMin(q)
+        );
+        return map;
+    }
+
+    public float getAverage(Quiz q ){
+        if(getNumberOfTakes(q)>0)
+        return userQuizTakeRepository.findAll().stream().filter(qt->qt.getQuiz().getId() == q.getId()).collect(Collectors.toSet()).stream().mapToInt(qt->(int)qt.getMark()).sum()/getNumberOfTakes(q);
+        else return 0;
+    }
+
+    public float getMax(Quiz q)
+    {
+        return userQuizTakeRepository.findAll().stream().filter(qt->qt.getQuiz().getId() == q.getId()).collect(Collectors.toSet()).stream().mapToInt(qt->(int)qt.getMark()).max().orElse(0);
+
+    }
+
+    public float getMin(Quiz q)
+    {
+        return userQuizTakeRepository.findAll().stream().filter(qt->qt.getQuiz().getId() == q.getId()).collect(Collectors.toSet()).stream().mapToInt(qt->(int)qt.getMark()).min().orElse(0);
     }
 }

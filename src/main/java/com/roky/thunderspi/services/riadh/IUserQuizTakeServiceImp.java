@@ -47,4 +47,10 @@ public class IUserQuizTakeServiceImp implements IUserQuizTakeService{
     public UserQuizTake findById(Long id) {
         return userQuizTakeRepository.findById(id).get();
     }
+
+    @Override
+    public Set<UserQuizTake> getQuizTakesByUser(Long id) {
+        return userQuizTakeRepository.findAll().stream().filter(userQuizTake -> userQuizTake.getUser().getId().equals(id)).collect(Collectors.toSet());
+    }
+
 }

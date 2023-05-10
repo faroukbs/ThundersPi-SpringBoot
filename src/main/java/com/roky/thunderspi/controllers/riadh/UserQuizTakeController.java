@@ -47,6 +47,11 @@ public class UserQuizTakeController {
     }
 
 
+    @GetMapping("/user/{id}")
+    public Set<UserQuizTake> getQuizTakesByUser(@PathVariable("id") Long id)
+    {
+        return userQuizTakeService.getQuizTakesByUser(id);
+    }
 
 
 }

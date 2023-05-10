@@ -13,4 +13,5 @@ public interface IUserQuizTakeService {
     public void deleteQuizTake(Long id);
     public UserQuizTake findById(Long id);
 
+    public Set<UserQuizTake> getQuizTakesByUser(Long id);
 }

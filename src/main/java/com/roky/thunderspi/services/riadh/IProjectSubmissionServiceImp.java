@@ -56,5 +56,10 @@ public class IProjectSubmissionServiceImp implements IProjectSubmissionService{
                 }).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
+    @Override
+    public Set<ProjectSubmission> getProjectSubmissionsByProjectId(Long id) {
+        return projectSubmissionRepository.findAllByProjectId(id);
+    }
+
 
 }

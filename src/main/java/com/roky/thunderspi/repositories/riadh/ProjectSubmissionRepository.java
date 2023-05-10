@@ -12,4 +12,6 @@ import java.util.Set;
 public interface ProjectSubmissionRepository extends JpaRepository<ProjectSubmission,Long> {
     @Query("select p from ProjectSubmission p where p.user.id = ?1")
     Set<ProjectSubmission> findByUserId(Long id);
+
+    Set<ProjectSubmission> findAllByProjectId(Long id);
 }

@@ -51,4 +51,10 @@ public class ProjectSubmissionController {
     {
         return IProjectSubmissionServiceImp.getProjectSubmissionsByStudentId(id);
     }
+
+    @GetMapping("/project/{id}")
+    public Set<ProjectSubmission> getProjectSubmissionByProject(Long id)
+    {
+        return IProjectSubmissionServiceImp.getProjectSubmissionsByProjectId(id);
+    }
 }

@@ -41,4 +41,10 @@ public class QuestionController {
     {
         questionService.deleteQuestion(id);
     }
+
+    @GetMapping("/correct")
+    public Set<Question> getQuestionsByCorrectAnswers()
+    {
+        return questionService.getQuestionsByCorrectAnswers();
+    }
 }

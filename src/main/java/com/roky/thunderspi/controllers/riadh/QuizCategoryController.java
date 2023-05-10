@@ -49,4 +49,6 @@ public class QuizCategoryController {
     {
         quizCategoryService.deleteQuizCategory(id);
     }
+
+
 }

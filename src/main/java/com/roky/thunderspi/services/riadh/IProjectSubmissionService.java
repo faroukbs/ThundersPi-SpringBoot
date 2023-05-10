@@ -19,4 +19,5 @@ public interface IProjectSubmissionService {
     public Set<ProjectSubmission> getProjectSubmissionByGrades();
 
 
+    Set<ProjectSubmission> getProjectSubmissionsByProjectId(Long id);
 }
