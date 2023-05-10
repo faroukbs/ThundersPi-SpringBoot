@@ -13,6 +13,7 @@ public interface IQuizService {
     public Quiz editQuiz(Quiz q);
 
     public Set<Quiz> getQuizByTeacherId(Long id);
-    public Set<Quiz> getQuizByNumberOfTakes();
+    public Set<Quiz> getQuizByNumberOfTakes(int takes);
+    public Set<Quiz> getQuizByCourseId(Long id);
 
 }

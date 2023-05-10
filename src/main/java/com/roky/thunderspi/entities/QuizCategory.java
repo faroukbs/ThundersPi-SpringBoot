@@ -10,8 +10,6 @@ import javax.persistence.Id;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 public class QuizCategory {

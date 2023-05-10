@@ -26,13 +26,13 @@ public class QuestionController {
     }
 
     @PostMapping
-    public Question addQuestion(@RequestParam Question q)
+    public Question addQuestion(@RequestBody Question q)
     {
         return questionService.addQuestion(q);
     }
 
     @PutMapping
-    public Question updateQuestion(@RequestParam Question q)
+    public Question updateQuestion(@RequestBody Question q)
     {
         return questionService.updateQuestion(q);
     }

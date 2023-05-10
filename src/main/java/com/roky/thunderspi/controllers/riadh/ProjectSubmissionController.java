@@ -23,13 +23,13 @@ public class ProjectSubmissionController {
     }
 
     @PostMapping
-    public void addProjectSubmisison(@RequestParam ProjectSubmission p)
+    public void addProjectSubmisison(@RequestBody ProjectSubmission p)
     {
         IProjectSubmissionServiceImp.addProjectSubmission(p);
     }
 
     @PutMapping
-    public void updateProjectSubmission(@RequestParam ProjectSubmission p)
+    public void updateProjectSubmission(@RequestBody ProjectSubmission p)
     {
         IProjectSubmissionServiceImp.updateProjectrSubmission(p);
     }

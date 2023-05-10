@@ -24,20 +24,20 @@ private final IQuestionAnswerService questionAnswerServiceImp;
 }
 
 @PostMapping
-    public QuestionAnswer addQuestionAnswer(@RequestParam QuestionAnswer q)
+    public QuestionAnswer addQuestionAnswer(@RequestBody QuestionAnswer q)
 {
     return questionAnswerServiceImp.addQuestionAnswer(q);
 }
 
 @PutMapping
-    public QuestionAnswer editQuestionAnswer(@RequestParam QuestionAnswer q)
+    public QuestionAnswer editQuestionAnswer(@RequestBody QuestionAnswer q)
 {
     return questionAnswerServiceImp.updateQuestionAnswer(q);
 }
 
 
 @DeleteMapping
-    public void deleteQuestionAnswer(@RequestParam QuestionAnswer q)
+    public void deleteQuestionAnswer(@RequestBody QuestionAnswer q)
 {
     questionAnswerServiceImp.deleteQuestionAnswer(q.getId());
 }

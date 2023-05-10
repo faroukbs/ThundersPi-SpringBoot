@@ -22,19 +22,19 @@ public class QuizController {
         return quizService.getAllQuiz().stream().collect(Collectors.toSet());
     }
     @GetMapping("/{id}")
-    public Quiz getQuiz(Long id)
+    public Quiz getQuiz(@PathVariable("id") Long id)
     {
         return quizService.getQuizById(id);
     }
 
     @PostMapping
-    public Quiz addQuiz(@RequestParam Quiz q)
+    public Quiz addQuiz(@RequestBody Quiz q)
     {
         return quizService.addQuiz(q);
     }
 
     @PutMapping
-    public Quiz updateQuiz(@RequestParam Quiz q)
+    public Quiz updateQuiz(@RequestBody Quiz q)
     {
         return quizService.editQuiz(q);
     }
@@ -43,6 +43,12 @@ public class QuizController {
     public void deleteQuiz(@PathVariable Long id)
     {
         quizService.deleteQuiz(id);
+    }
+
+    @GetMapping("/course/{id}")
+    public Set<Quiz> getQuizByCourseId(@PathVariable("id") Long id)
+    {
+        return quizService.getQuizByCourseId(id);
     }
 
 }
